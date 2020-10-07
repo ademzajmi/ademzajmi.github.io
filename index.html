@@ -15,7 +15,7 @@
     <script>
     window.onload = function() {
     <!-- Deep link URL for existing users with app already installed on their device -->
-        window.location = 'https://www.google.com';
+        window.location = 'hellohealthdebug://';
     <!-- Download URL (TUNE link) for new users to download the app -->
         setTimeout("window.location = 'http://hastrk.com/serve?action=click&publisher_id=1&site_id=2';", 1000);
     }
@@ -29,7 +29,7 @@
     </form>
  
     <!-- button to Open App to specific screen for existing app users -->
-    <form action="yourapp://app.com/?screen=xxxxx" target="_blank">
+    <form action="hellohealthdebug://" target="_blank">
         <input type="submit" value="Open App" />
     </form>
  
