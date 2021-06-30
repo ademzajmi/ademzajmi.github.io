@@ -1,0 +1,173 @@
+<div class="long-title">
+    <h3>Anamnezi i Pacientit</h3>
+</div>
+<form action="your-action" (submit)="onFormSubmit($event)">
+    <dx-form id="form" [formData]="customer" [readOnly]="false" [showColonAfterLabel]="true" [showValidationSummary]="true" validationGroup="customerData"
+        labelLocation="top" [minColWidth]="233" [colCountByScreen]="colCountByScreen">
+
+        <dxi-item itemType="group" [colCount]="5" caption="Te Dhenat e Pacientit">
+            <dxi-item dataField="CustomerNo" 
+            [editorOptions]="{ value: customer.customerNo, readOnly: true }">
+            <dxo-label text="Customer No"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="Firstname" 
+            [editorOptions]="{ value: customer.firstname + ' ' + customer.lastname, readOnly: true }">
+            <dxo-label text="Emri dhe Mbiemri i Pacientit"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="Birthdate"  
+            [editorOptions]="{ value:customer.birthdate, readOnly: true }">
+            <dxo-label text="Data e Lindjes"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="Gender" editorType="dxRadioGroup" 
+            [editorOptions]="{ dataSource: genderItems, layout: 'horizontal', value: customer.gender === 'M' ? 'Mashkull' : 'Femer', readOnly: true }">
+            <dxo-label text="Gjinia"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="MaritalStatus" editorType="dxRadioGroup" 
+            [editorOptions]="{ dataSource: statusItems, layout: 'horizontal', value: customer.maritalStatus === true ? 'martuar' : customer.maritalStatus === false ? 'pamartuar' : '' }">
+            <dxo-label text="Statusi Martesor"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="Profession" 
+            [editorOptions]="{ value: customer.profession }" >
+            <dxo-label text="Profesioni"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="EducationStatus" 
+            [editorOptions]="{ value: customer.educationStatus }" >
+            <dxo-label text="Statusi Shkollor"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="Adress" 
+            [editorOptions]="{ value: customer.adress }" >
+            <dxo-label text="Adresa E shtepise"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="City" 
+            [editorOptions]="{ value: customer.city }" >
+            <dxo-label text="Qyteti"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="PostalCode" 
+            [editorOptions]="{ value: customer.postalCode }" >
+            <dxo-label text="Kodi i Postes"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="MobileTel" 
+            [editorOptions]="{ value: customer.mobileTel }" >
+            <dxo-label text="Tel. Mobil"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="Tel" 
+            [editorOptions]="{ value: customer.tel }" >
+            <dxo-label text="Tel. i shtepise"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="Email" 
+            [editorOptions]="{ value: customer.email }" >
+            <dxo-label text="E-mail"></dxo-label>
+            </dxi-item>
+        </dxi-item>
+
+        <dxi-item itemType="group" [colCount]="4" caption="Te Dhenat e Anamnezit">
+            <dxi-item dataField="" editorType="dxRadioGroup"
+            [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal', value: questionData[0] }">
+            <dxo-label text="A jeni duke ndjekur per moment ndonje proces terapik"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" [editorOptions]="{ value: anamnezContentData[1].comment }">
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxRadioGroup" [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal', value: questionData[1] }">
+             <dxo-label text="A perdorni ilace vazhdimisht"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField=""  [editorOptions]="{ value: anamnezContentData[2].comment }">
+            </dxi-item>
+        </dxi-item>
+
+
+        <dxi-item itemType="group" [colCount]="6">
+            <dxo-label text="A keni ndonje semundje qe keni kaluar me heret apo qe eshte ende ne vazhdim?">
+            </dxo-label>
+
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[3].yes ? true : false }">
+                <dxo-label text="Semundje e zemres"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[4].yes ? true : false }">
+                <dxo-label text="Semundje e sheqerit"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[5].yes ? true : false }">
+                <dxo-label text="Probleme me tension"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[6].yes ? true : false }">
+                <dxo-label text="Epilepsi (SARA)"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[7].yes ? true : false }">
+                <dxo-label text="Romatizem me zjarmi"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[8].yes ? true : false }">
+                <dxo-label text="Romatizem e nderlidhjeve"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[9].yes ? true : false }">
+                <dxo-label text="Guatr (Tiroid)"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[10].yes ? true : false }">
+                <dxo-label text="Hepatit (Verdheza)"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[11].yes ? true : false }">
+                <dxo-label text="Probleme me lukth"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[12].yes ? true : false }">
+                <dxo-label text="Probleme me veshkeza"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[13].yes ? true : false }">
+                <dxo-label text="Semundje e melqise"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxCheckBox" [editorOptions]="{ layout: 'horizontal', value: anamnezContentData[14].yes ? true : false }">
+                <dxo-label text="Sinuse"></dxo-label>
+            </dxi-item>
+
+        </dxi-item>
+
+        <dxi-item itemType="group" [colCount]="4">
+            <dxi-item dataField="" editorType="dxRadioGroup" [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal',value: questionData[2] }">
+                <dxo-label text="Perpos ketyre semundjeve a keni ndonje problem tjeter shendetesor?"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField=""  [editorOptions]="{ value: anamnezContentData[15].comment }">
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxRadioGroup" [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal', value: questionData[3]  }">
+                <dxo-label text="A eshte aplikuar anestezia lokale brenda gojes?"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField=""  [editorOptions]="{ value: anamnezContentData[16].comment }">
+            </dxi-item>
+
+
+            <dxi-item dataField="" editorType="dxRadioGroup" [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal',  value: questionData[4]  }">
+                <dxo-label text="Gjate procesit te diagnostifikimit te dhembit, a ju ka paraqitur ndonje komplikacion ose reaksion alergjik?"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" [editorOptions]="{ value: anamnezContentData[17].comment }">
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxRadioGroup" [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal',  value: questionData[5]  }">
+                <dxo-label text="A zgjat shume gjkderdhja pa procesit kirurgjik ose lendimit?"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" [editorOptions]="{ value: anamnezContentData[18].comment }">
+            </dxi-item>
+        </dxi-item>
+
+        <dxi-item itemType="group" [colCount]="4">
+            <dxi-item dataField="" editorType="dxRadioGroup" [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal',  value: questionData[6]  }">
+                <dxo-label text="A jeni shtatzene?"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxRadioGroup" [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal',  value: questionData[7]  }">
+                <dxo-label text="A keni vese kercellimin e dhembeve?"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" editorType="dxRadioGroup" [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal',  value: questionData[8]  }">
+                <dxo-label text="A keni gjakederdhje gjate larjes se dhembeve?"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField="" [editorOptions]="{ value: anamnezContentData[21].comment }">
+                <dxo-label text="Sa shpesh i lani dhembet?"></dxo-label>
+            </dxi-item>
+        </dxi-item>
+
+        <dxi-item itemType="group" [colCount]="2">
+            <dxi-item dataField="" editorType="dxRadioGroup" [editorOptions]="{ dataSource: boolQuest, layout: 'horizontal',  value: questionData[9]  }">
+                <dxo-label text="A përdorni duhan?"></dxo-label>
+            </dxi-item>
+            <dxi-item dataField=""  [editorOptions]="{ value: anamnezContentData[23].comment }">
+                <dxo-label text="Cilat janë problemet e juaj me dhëmbë?"></dxo-label>
+            </dxi-item>
+        </dxi-item>
+
+        <dxi-item itemType="button" alignment="left" [buttonOptions]="buttonOptions">
+        </dxi-item>
+    </dx-form>
+</form>

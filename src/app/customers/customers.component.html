@@ -1,0 +1,63 @@
+<div class="customer-grid">
+<dx-data-grid
+    #gridRef
+    [hoverStateEnabled]="true"
+    [dataSource]="customers"
+    [columns]="['customerNo', 'firstname', 'lastname', 'tel', 'secondary tel', 'gender', 'birthdate', 'adress', 'email']"
+    (onRowInserting)="insertPatient($event)"
+    (onRowUpdating)="updatePatient($event)"
+    (onRowRemoving)="deletePatient($event)"
+    (onRowClick)="selectRow($event)">
+    <dxo-paging [pageSize]="20"></dxo-paging>
+    <dxo-selection
+        mode="single"> <!-- "multiple" | "none" -->
+    </dxo-selection>
+     <dxo-search-panel 
+        [visible]="true" 
+        [width]="240" 
+        placeholder="Search...">
+    </dxo-search-panel>
+     <dxo-editing 
+         mode="popup"
+         [allowUpdating]="true"
+         [allowDeleting]="true"
+         [allowAdding]="true">
+          <dxo-popup
+                title=''
+                [showTitle]="true"
+                [width]="700"
+                [height]="345">
+            </dxo-popup>
+    </dxo-editing>
+    <dxi-column dataField="customerNo" caption="Customer No" [visible]="false"></dxi-column>
+        <dxi-column dataField="firstname" caption="First Name">
+            <dxi-validation-rule 
+                    type="required"
+                    message="First Name is required">
+                </dxi-validation-rule></dxi-column>
+        <dxi-column dataField="lastname" caption="Last Name"> <dxi-validation-rule 
+                    type="required"
+                    message="Last Name is required">
+                </dxi-validation-rule></dxi-column>
+        <dxi-column dataField="tel"> <dxi-validation-rule 
+                    type="required"
+                    message="Phone is required">
+                </dxi-validation-rule></dxi-column>
+        <dxi-column dataField="mobileTel" caption="Secondary Tel"></dxi-column>
+        <dxi-column dataField="gender" [width]="70"></dxi-column>
+        <dxi-column dataField="birthdate" dataType="date" [editorOptions]="{ invalidDateMessage: 'The date must have the following format: dd/MM/yyyy', displayFormat:'dd/MM/yyyy' }"></dxi-column>
+        <dxi-column dataField="personalId"></dxi-column>
+        <dxi-column dataField="messL" caption="Messaging Language">
+            <dxo-lookup  
+            [dataSource]="messagingLanguage"
+            displayExpr="caption"
+            valueExpr="id">
+            </dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="adress"></dxi-column>
+        <dxi-column dataField="email"></dxi-column>
+</dx-data-grid>
+<br>
+<br>
+<dx-button width="100" [text]="'Anamnez'" [type]="'success'" (onClick)="navigateToAnamnez()" [disabled]="disableAnamnezBtn"></dx-button>
+<div>

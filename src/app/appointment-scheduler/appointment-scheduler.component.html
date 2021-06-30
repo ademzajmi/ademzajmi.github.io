@@ -1,0 +1,150 @@
+<div class="select-dr">
+  <dx-select-box
+    [dataSource]="doctorListData"
+    displayExpr="name"
+    valueExpr="id"
+    [value]="loggedInDrID"
+    (onValueChanged)="selectDr($event)"
+  ></dx-select-box>
+</div>
+
+<!-- <dx-select-box [dataSource]="chairListByDr"
+                displayExpr="number"
+                valueExpr="chairId" 
+                [value]="selectedChair.chairId"
+                (onValueChanged)="selectChair($event)"
+                ></dx-select-box> -->
+
+<div class="appointment-types">
+  <dx-radio-group
+    [items]="appointmentViewTypes"
+    [value]="appointmentViewTypes[0]"
+    (onValueChanged)="switchAppointmentType($event)"
+    layout="horizontal"
+  >
+  </dx-radio-group>
+</div>
+
+<div class="chair-group">
+  <dx-radio-group
+    [items]="rooms"
+    [value]="selectedChair.chairId"
+    (onValueChanged)="selectChair($event)"
+    layout="horizontal"
+  >
+  </dx-radio-group>
+</div>
+
+<div class="calendar-btns">
+  <dx-button
+    width="140"
+    [text]="'Show Calendar'"
+    [type]="normal"
+    (onClick)="showCalendar = !showCalendar"
+  ></dx-button>
+  <dx-button
+    width="140"
+    [text]="'Today'"
+    [type]="normal"
+    (onClick)="getToday()"
+  ></dx-button>
+</div>
+
+<div class="{{ showCalendar ? 'parent' : '' }}">
+  <div>
+    <dx-load-panel [closeOnOutsideClick]="true" [(visible)]="isLoading">
+    </dx-load-panel>
+
+    <dx-scheduler
+      [dataSource]="appointmentsData"
+      [views]="views"
+      currentView="Week"
+      [firstDayOfWeek]="1"
+      [currentDate]="currentDate"
+      [startDayHour]="7"
+      [endDayHour]="23"
+      [cellDuration]="15"
+      [showCurrentTimeIndicator]="true"
+      (onAppointmentFormCreated)="onAppointmentFormCreated($event)"
+      (onAppointmentAdding)="onAppointmentAdding($event)"
+      (onAppointmentUpdating)="onAppointmentUpdating($event)"
+      (onAppointmentDeleting)="AppointmentDeleting($event)"
+      (onOptionChanged)="onOptionChanged($event)"
+      [shadeUntilCurrentTime]="shadeUntilCurrentTime"
+      [width]="showCalendar ? 850 : 1300"
+      appointmentTooltipTemplate="tooltip-template"
+      dataCellTemplate="dataCellTemplate"
+      (onAppointmentRendered)="onAppointmentRendered($event)"
+    >
+      <!--<dx-load-indicator [(visible)]="isLoading"></dx-load-indicator>-->
+      <!--<dxo-loading-indicator [show]="isLoading"></dxo-loading-indicator>-->
+
+      <dxi-view name="Day" type="day" [intervalCount]="1"> </dxi-view>
+      <dxi-view
+        name="Week"
+        type="day"
+        [intervalCount]="7"
+        [startDate]="daysViewStartDate"
+      >
+      </dxi-view>
+      <dxi-view name="Months" type="month" [intervalCount]="1"> </dxi-view>
+
+      <dxi-resource
+        fieldExpr="doctorId"
+        label="Doctor List"
+        [dataSource]="doctorColorList"
+      >
+      </dxi-resource>
+
+      <div *dxTemplate="let showtime of 'tooltip-template'">
+        <div>
+          <dx-button
+            text="Delete"
+            (onClick)="onAppointmentDeleteFromTooltip(showtime, null)"
+            type="danger"
+          ></dx-button>
+          <dx-button
+            text="Open Appointment"
+            (onClick)="openSelectedAppointment(showtime, null)"
+            type="default"
+          ></dx-button>
+          <dx-button
+            text="Go to Treatment"
+            (onClick)="opentSelectedTreatment(showtime, null)"
+            type="success"
+          ></dx-button>
+          <dx-button
+            text="{{
+              showtime.hasTreatmentOffersRegistred ? 'Update Plan' : 'Add Plan'
+            }}"
+            (onClick)="opentSelectedTreatment(showtime, true)"
+            type="normal"
+          ></dx-button>
+        </div>
+      </div>
+
+      <div *dxTemplate="let cellData of 'dataCellTemplate'">
+        <div [ngClass]="hasBleaching(cellData)">&nbsp;</div>
+      </div>
+    </dx-scheduler>
+  </div>
+  <div class="{{ showCalendar ? '' : 'display-none' }}">
+    <dx-calendar
+      [firstDayOfWeek]="1"
+      (onValueChanged)="onCalnedarValueChanged($event)"
+    >
+    </dx-calendar>
+    <dx-calendar
+      [firstDayOfWeek]="1"
+      (onValueChanged)="onCalnedarValueChanged($event)"
+      [(value)]="secondMonth"
+    >
+    </dx-calendar>
+    <dx-calendar
+      [firstDayOfWeek]="1"
+      (onValueChanged)="onCalnedarValueChanged($event)"
+      [(value)]="thirdMonth"
+    >
+    </dx-calendar>
+  </div>
+</div>

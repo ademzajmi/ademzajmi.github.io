@@ -1,0 +1,40 @@
+<ng-container *ngIf="removeTemplate">
+<form action="your-action" (submit)="onFormSubmit($event)">
+    <dx-form id="form"
+        [formData]="customer"
+        [readOnly]="false"
+        [showColonAfterLabel]="true"
+        [showValidationSummary]="true"
+        validationGroup="customerData">
+      <dxi-item dataField="Login">
+                <dxi-validation-rule 
+                    type="required"
+                    message="Login is required">
+                </dxi-validation-rule>
+            </dxi-item>
+            <dxi-item dataField="Password"
+                [editorOptions]="{ mode: 'password' }">
+                <dxi-validation-rule 
+                    type="required"
+                    message="Password is required">
+                </dxi-validation-rule>
+            </dxi-item>
+            
+            
+        <dxi-item 
+            itemType="button"
+            alignment="left"
+            [buttonOptions]="buttonOptions">
+        </dxi-item>
+    </dx-form>
+</form>
+
+<dx-file-uploader
+        #fileUploader
+        [multiple]="false"
+        accept="*"
+        [(value)]="value"
+        uploadMode="useButtons"
+        (change)="onFileUpload($event)"
+></dx-file-uploader>
+</ng-container>

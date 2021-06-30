@@ -1,0 +1,32 @@
+
+.filters-wrapper {
+    width: 100vw;
+    max-width: 100%;
+    overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-top: 12px;
+}
+  
+.filters-wrapper-item {
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    vertical-align: middle;
+}
+
+::ng-deep #includeDebt .dx-checkbox-icon {
+    background: #ffb5b5;
+}
+
+::ng-deep #includeDebtPayment .dx-checkbox-icon {
+    background: #81f783;
+}
+
+::ng-deep #includeAdvance .dx-checkbox-icon {
+    background: #81a2f7;
+}
+
+::ng-deep #includeAdvancePayment .dx-checkbox-icon {
+    background: #d681f7;
+}

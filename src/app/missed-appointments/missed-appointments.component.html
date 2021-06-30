@@ -1,0 +1,48 @@
+
+<div class="wrapper">
+
+<div class="filters-wrapper">
+  <div class="filters-wrapper-item">
+    <h4 style="margin: 5px;">Start Date</h4>
+    <dx-date-box 
+      [(max)]="endValue"
+      [(value)]="startValue"
+      [displayFormat]="'dd/MM/yyyy'"
+      (onValueChanged)="onDateChange($event, 'startValue')" >
+    </dx-date-box>
+  </div>
+  <div class="filters-wrapper-item">
+    <h4 style="margin: 5px;">End Date</h4>
+    <dx-date-box 
+      [(min)]="startValue"
+      [(value)]="endValue"
+      [displayFormat]="'dd/MM/yyyy'"  
+      (onValueChanged)="onDateChange($event, 'endValue')" >
+    </dx-date-box>
+  </div>  
+ 
+</div>
+  
+<dx-data-grid id="gridContainer" [showBorders]="true" [dataSource]="missedAppointments"  [columnAutoWidth]="true" >
+    <dxo-filter-row 
+    [visible]="true" 
+    [applyFilter]="'auto'"></dxo-filter-row>
+    <dxo-paging [pageSize]="20"></dxo-paging>
+    <dxo-sorting mode="none"></dxo-sorting>
+    <dxi-column dataField="Customer"></dxi-column>
+    <dxi-column dataField="Date"></dxi-column>
+    <dxi-column dataField="StartTime"></dxi-column>
+    <dxi-column dataField="EndTime"></dxi-column>
+    <dxi-column dataField="Text"></dxi-column>
+    <dxi-column dataField="Tel"></dxi-column>
+    <dxi-column dataField="Doctor"></dxi-column>
+    
+ </dx-data-grid>
+
+     <dx-load-panel
+      [closeOnOutsideClick]="true"
+      [(visible)]="isLoading">
+      </dx-load-panel>
+  
+  
+</div>

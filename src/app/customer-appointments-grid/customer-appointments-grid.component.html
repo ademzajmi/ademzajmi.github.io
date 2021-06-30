@@ -1,0 +1,18 @@
+<div id="customerSelectBox">
+    <customer-search (onCustomerSelect)="selectCustomer($event)" [display]="value"></customer-search>
+    <!-- <dx-select-box
+    [items]="customerList"
+    placeholder="Choose Patient"
+    [showClearButton]="true"
+    [searchEnabled]="true"
+    displayExpr="firstLastName"
+    valueExpr="id"
+    width="220"
+    (onValueChanged)="selectCustomer($event)">
+</dx-select-box> -->
+</div>
+
+<dx-data-grid id="gridContainer" [dataSource]="customerAppointments"
+    [columns]="['date', 'startTime', 'endTime', 'subject', 'doctor']"
+    (onRowPrepared)="onRowPrepared($event)">
+</dx-data-grid>

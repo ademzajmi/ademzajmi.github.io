@@ -1,0 +1,69 @@
+<form action="your-action" (submit)="onFormSubmit($event)"style="
+    margin-top: 30px">
+    <dx-form id="form"
+       
+        [readOnly]="false"
+        [showColonAfterLabel]="false"
+        [showValidationSummary]="true"
+        validationGroup="customerData">
+          <!--Customer NO-->
+            <dxi-item dataField="Customer No"
+              [editorOptions]="{ mode: 'number' }">
+            </dxi-item>
+            <!--First Name-->
+            <dxi-item dataField="First Name">
+                <dxi-validation-rule 
+                    type="required"
+                    message="First Name is required">
+                </dxi-validation-rule>
+            </dxi-item>
+            <!--Last Name-->
+             <dxi-item dataField="Last Name">
+                <dxi-validation-rule 
+                    type="required"
+                    message="First Name No is required">
+                </dxi-validation-rule>
+            </dxi-item>
+            <!--Phone-->
+            <dxi-item dataField="Tel" [editorOptions]="{ mode: 'number' }">
+                <dxi-validation-rule 
+                    type="required"
+                    message="Phone is required">
+                </dxi-validation-rule>
+            </dxi-item>
+            <!-- Phone 2 -->
+            <dxi-item dataField="Secondary Tel" 
+                [editorOptions]="{ mode: 'number' }">
+            </dxi-item>
+            <!--Gender-->
+           <dxi-item dataField="Gender" 
+                    editorType="dxRadioGroup" 
+                    [editorOptions]="{ dataSource: genderItems, layout: 'horizontal' }">
+           </dxi-item>
+           <!--Date of Birth-->
+            <dxi-item dataField="Date of birth"
+                editorType="dxDateBox"
+                [editorOptions]="{ invalidDateMessage: 'The date must have the following format: dd/MM/yyyy', displayFormat:'dd/MM/yyyy' }">
+            </dxi-item>
+            <!--Personal ID-->
+            <dxi-item dataField="Personal ID"
+                [editorOptions]="{ mode: 'number' }">
+            </dxi-item>
+             <!--Messaging Language-->
+        <dxi-item dataField="Messaging Language" 
+           editorType="dxSelectBox" 
+           [editorOptions]="{ items: messagingLanguage, value: '' }">
+        
+        </dxi-item>
+          <!--Address-->
+              <dxi-item dataField="Address">
+            </dxi-item>
+              <!--E-mail-->
+            <dxi-item dataField="Email"></dxi-item>
+        <dxi-item 
+            itemType="button"
+            alignment="left"
+            [buttonOptions]="buttonOptions">
+        </dxi-item>
+    </dx-form>
+</form>

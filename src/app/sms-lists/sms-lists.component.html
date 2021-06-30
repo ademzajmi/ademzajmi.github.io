@@ -1,0 +1,81 @@
+
+<div class="filters-wrapper">
+  <div class="filters-wrapper-item">
+    <h4 style="margin: 5px;">Date</h4>
+    <dx-date-box id="datepicker" [(value)]="date" (onValueChanged)="onDateChange($event, 'date')" type="date"
+      displayFormat="dd/MM/yyyy">
+    </dx-date-box>
+  </div>
+  
+  <div class="filters-wrapper-item">
+    <h4 style="margin: 5px;">Next Date</h4>
+    <dx-date-box id="nextdatepicker" [(value)]="nextDate" (onValueChanged)="onDateChange($event, 'nextDate')" type="date"
+      displayFormat="dd/MM/yyyy">
+    </dx-date-box>
+  </div>
+
+  <div class="filters-wrapper-item" style="margin-bottom: -8px;">
+    <dx-button type="default" text="Send Messages" (onClick)="sendMessages()"></dx-button>
+  </div>
+
+  <div class="filters-wrapper-item" style="margin-bottom: -8px;">
+ 
+  </div>
+
+  
+</div>
+
+<div class="grids-wrapper">
+  <div class="grid-wrapper-item">
+      <dx-data-grid id="gridContainer" [dataSource]="dateList" [showBorders]="true"
+       #todayDatagrid>
+      <!-- (onContentReady)="onContentReady($event, 'Date List')" -->
+
+        <dxo-editing mode="popup" [allowUpdating]="true" ></dxo-editing>
+        <!-- <dxo-export [enabled]="true" [fileName]="todayFilename" [allowExportSelectedData]="true"></dxo-export> -->
+        <dxo-selection mode="multiple"></dxo-selection>
+      
+        <dxi-column dataField="Tel"></dxi-column>
+        <dxi-column dataField="Fullname"></dxi-column>
+        <dxi-column dataField="Content" [width]="2"></dxi-column>
+      
+      </dx-data-grid>
+  </div>
+  <div class="grid-wrapper-item">
+      <dx-data-grid id="gridContainer" [dataSource]="nextDateList" [showBorders]="true"
+      #nextDatagrid>
+      <!-- (onContentReady)="onContentReady($event, 'Next Date List')" -->
+
+        <dxo-editing mode="popup" [allowUpdating]="true"></dxo-editing>
+        <!-- <dxo-export [enabled]="true" [fileName]="tomorrowFilename" [allowExportSelectedData]="true"></dxo-export> -->
+        <dxo-selection mode="multiple"></dxo-selection>
+      
+        <dxi-column dataField="Tel"></dxi-column>
+        <dxi-column dataField="Fullname"></dxi-column>
+        <dxi-column dataField="Content" [width]="2"></dxi-column>
+      
+      </dx-data-grid>
+  </div>
+
+  <dx-load-panel [closeOnOutsideClick]="true" [(visible)]="isLoading">
+  </dx-load-panel>
+</div>
+
+<dx-popup class="popup" [width]="300" [height]="300" [dragEnabled]="true" [closeOnOutsideClick]="true"
+    [(visible)]="popupVisible" contentTemplate="popupContent" title="Delete Treatment">
+    <div *dxTemplate="let data of 'popupContent'">
+        <p >{{printSelected()}}</p>
+
+        <p *ngIf="isDateExists" style="color: red;">Messages from {{date}} are sent before</p>
+        <p *ngIf="isNextDateExists" style="color: red;">Messages from {{nextDate}} are sent before</p>
+
+     
+          <dx-button text="Yes" type="default" (onClick)="onMessageSend('Yes')">
+          </dx-button>
+  
+          <dx-button text="No" type="normal" (onClick)="onMessageSend('No')">
+          </dx-button>
+        
+    </div>
+
+</dx-popup>

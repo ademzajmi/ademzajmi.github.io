@@ -1,0 +1,232 @@
+<div class="customerSelectBox">
+  <div
+    class="display-inline"
+    style="vertical-align: middle; margin-left: 20px;"
+  >
+    <h4 style="margin-top: 0px; color: #848484">Sale:</h4>
+  </div>
+  <div class="display-inline">
+    <dx-number-box
+      [min]="0"
+      [value]="sale"
+      [showSpinButtons]="false"
+      placeholder="0.00"
+      format="#,##0.00"
+      (keyup)="calcSale($event.target.value)"
+      width="90"
+    ></dx-number-box>
+  </div>
+
+  <div
+    class="display-inline"
+    style="vertical-align: middle; margin-left: 20px;"
+  >
+    <h4 style="margin-top: 0px; color: #848484">Total:</h4>
+  </div>
+  <div class="display-inline">
+    <dx-text-box
+      [value]="totalOperationsPrice.toFixed(2)"
+      [disabled]="true"
+      width="110"
+    ></dx-text-box>
+  </div>
+
+  <div
+    class="display-inline"
+    style="vertical-align: middle; margin-left: 20px;"
+  >
+    <h4 style="margin-top: 0px; color:#848484">Date:</h4>
+  </div>
+
+  <div class="display-inline">
+    <dx-date-box [(value)]="addedDate" type="date" displayFormat="dd/MM/yyyy">
+    </dx-date-box>
+  </div>
+
+  <div
+    class="display-inline"
+    style="vertical-align: middle; margin-left: 20px;"
+  >
+    <h4 style="margin-top: 0px; color: #848484">Doctor:</h4>
+  </div>
+  <div class="display-inline">
+    <dx-text-box
+      [value]="doctorName"
+      [disabled]="true"
+      width="180"
+    ></dx-text-box>
+  </div>
+
+  <div
+    class="display-inline"
+    style="vertical-align: middle; margin-left: 20px;"
+  >
+    <h4 style="margin-top: 0px; color: #848484">Patient:</h4>
+  </div>
+  <div class="display-inline">
+    <dx-text-box
+      [value]="patientName"
+      [disabled]="true"
+      width="180"
+    ></dx-text-box>
+  </div>
+
+  <div class="display-inline">
+    <dx-button
+      id="save-btn"
+      width="150"
+      text="{{ isUpdate ? 'Update Plan' : 'Add New Plan' }}"
+      (onClick)="saveTreatmentOffer()"
+      [disabled]="appliedOperations.length === 0"
+    ></dx-button>
+  </div>
+</div>
+
+<div id="parent">
+  <div id="narrow">
+      <dx-accordion
+        [dataSource]="categories"
+        [collapsible]="true"
+        [multiple]="false"
+        width="250"
+        [selectedIndex]="-1"
+      >
+        <div *dxTemplate="let item = data; of: 'RADIOLOGJI'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'RADIOLOGJI')"
+            [dataSource]="operations0"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+        <div *dxTemplate="let item = data; of: 'KONZERVATIVE'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'KONZERVATIVE')"
+            [dataSource]="operations1"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+        <div *dxTemplate="let item = data; of: 'ZBARDHIM'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'ZBARDHIM')"
+            [dataSource]="operations2"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+        <div *dxTemplate="let item = data; of: 'ENDODONTI'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'ENDODONTI')"
+            [dataSource]="operations3"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+        <div *dxTemplate="let item = data; of: 'PERIODONTOLOGJI'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'PERIODONTOLOGJI')"
+            [dataSource]="operations4"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+        <div *dxTemplate="let item = data; of: 'KIRURGJI'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'KIRURGJI')"
+            [dataSource]="operations5"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+        <div *dxTemplate="let item = data; of: 'PROTETIKË'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'PROTETIKË')"
+            [dataSource]="operations6"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+          <div *dxTemplate="let item = data; of: 'ORTODONTI'">
+            <dx-list
+              (onItemClick)="onItemClick($event, 'ORTODONTI')"
+              [dataSource]="operations7"
+              [showSelectionControls]="true"
+            ></dx-list>
+          </div>
+  
+          <div *dxTemplate="let item = data; of: 'IMPLANT'">
+            <dx-list
+              (onItemClick)="onItemClick($event, 'IMPLANT')"
+              [dataSource]="operations8"
+              [showSelectionControls]="true"
+            ></dx-list>
+          </div>
+
+          <div *dxTemplate="let item = data; of: 'DERMAL DOLGULAR'">
+            <dx-list
+              (onItemClick)="onItemClick($event, 'DERMAL DOLGULAR')"
+              [dataSource]="operations9"
+              [showSelectionControls]="true"
+            ></dx-list>
+          </div>
+
+      </dx-accordion>
+  </div>
+
+  <div id="wide">
+    <dx-data-grid
+      id="gridContainer"
+      [dataSource]="appliedOperations"
+      [columns]="['Operation', 'Teeth', 'Price']"
+      (onRowRemoving)="onTreatmentDetailDeleting($event)"
+    >
+      <dxi-column dataField="Operation"></dxi-column>
+      <dxi-column dataField="Teeth"></dxi-column>
+      <dxi-column dataField="Quantity"></dxi-column>
+      <dxi-column dataField="Price">
+        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+      </dxi-column>
+      <dxi-column dataField="TotalPrice">
+        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+      </dxi-column>
+
+      <dxo-editing mode="row" [allowDeleting]="true"> </dxo-editing>
+    </dx-data-grid>
+  </div>
+</div>
+
+<div class="comment">
+  <dx-text-area
+    [height]="120"
+    [width]="1000"
+    [maxLength]="200"
+    [(value)]="comment"
+    placeholder="Comment..."
+  >
+  </dx-text-area>
+</div>
+
+<!-- Teeth Number and Quantity Popup -->
+<dx-popup
+  class="popup"
+  [width]="300"
+  [height]="300"
+  [showTitle]="true"
+  title="Select Teeth"
+  [dragEnabled]="true"
+  [closeOnOutsideClick]="true"
+  [(visible)]="popupVisible"
+  (onHiding)="onPopupHiding($event)"
+  contentTemplate="popupContent"
+>
+  <div *dxTemplate="let data of 'popupContent'">
+    <p>Type Teeth number followed by ( , )</p>
+    <input type="text" (keyup)="onTeethNumberType($event)" #teethNr />
+    <p>Quantity</p>
+    <dx-number-box [showSpinButtons]="true" [value]="quantity"></dx-number-box>
+    <br />
+    <dx-button text="OK" type="default" (onClick)="selectTeeth($event)">
+    </dx-button>
+  </div>
+</dx-popup>

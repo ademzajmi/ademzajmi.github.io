@@ -1,0 +1,34 @@
+<div class="wrapper">
+  <div class="display-inline-flex">
+    <customer-search
+      (onCustomerSelect)="selectCustomer($event)"
+      [display]="value"
+    ></customer-search>
+  </div>
+
+  <div class="display-inline-flex">
+    <dx-button
+      text="Go To Plan"
+      type="default"
+      (onClick)="goToPlan()"
+      [disabled]="!selectedPlan"
+    ></dx-button>
+  </div>
+
+  <div>
+    <dx-data-grid
+      id="gridContainer"
+      [showBorders]="true"
+      [dataSource]="offersList"
+      [columnAutoWidth]="true"
+      (onRowClick)="onRowClick($event)"
+    >
+      <dxo-load-panel [enabled]="true"></dxo-load-panel>
+      <dxo-scrolling mode="virtual"></dxo-scrolling>
+      <dxo-sorting mode="none"></dxo-sorting>
+      <dxi-column dataField="Date"></dxi-column>
+      <dxi-column dataField="Doctor"></dxi-column>
+      <dxi-column dataField="Operations"></dxi-column>
+    </dx-data-grid>
+  </div>
+</div>

@@ -1,0 +1,544 @@
+<div class="customerSelectBox">
+  <div class="display-inline">
+    <customer-search
+      (onCustomerSelect)="selectCustomer($event)"
+      [display]="value"
+    ></customer-search>
+  </div>
+
+  <div
+    class="display-inline"
+    style="vertical-align: middle; margin-left: 20px;"
+  >
+    <h4 style="margin-top: 0px; color: #848484">Sale:</h4>
+  </div>
+
+  <div class="display-inline">
+    <dx-number-box
+      [min]="0"
+      [value]="sale"
+      [showSpinButtons]="false"
+      placeholder="0.00"
+      format="###0.00"
+      (keyup)="calcSale($event.target.value)"
+      width="90"
+      [disabled]="
+        (isDoctor && !allowDrToMakePayment) || (!isDoctor && !isPending)
+      "
+    ></dx-number-box>
+  </div>
+
+  <div class="display-inline">
+    <dx-text-box
+      [value]="totalOperationsPriceLabel"
+      [disabled]="true"
+      width="110"
+    ></dx-text-box>
+  </div>
+
+  <div
+    class="display-inline"
+    style="vertical-align: middle; margin-left: 20px;"
+  >
+    <h4 style="margin-top: 0px; color: #848484">Collected:</h4>
+  </div>
+  <div class="display-inline">
+    <dx-number-box
+      [min]="0"
+      [(value)]="collected"
+      [showSpinButtons]="false"
+      placeholder="0.00"
+      width="90"
+      format="#,##0.00"
+      [disabled]="
+        (isDoctor && !allowDrToMakePayment) || (!isDoctor && !isPending)
+      "
+    >
+    </dx-number-box>
+  </div>
+  <div class="display-inline">
+    <dx-text-box [value]="collector" [disabled]="true"></dx-text-box>
+  </div>
+
+  <div
+    class="display-inline"
+    style="vertical-align: middle; margin-left: 20px;"
+  >
+    <h4 style="margin-top: 0px; color:#848484">Date:</h4>
+  </div>
+
+  <div class="display-inline">
+    <dx-date-box [(value)]="paymentDate" type="date" displayFormat="dd/MM/yyyy">
+    </dx-date-box>
+  </div>
+
+  <div class="display-inline">
+    <dx-button
+      id="save-btn"
+      width="150"
+      text="Save"
+      [type]="totalPaymentsResult < 0 ? 'danger' : 'default'"
+      (onClick)="saveTreatments()"
+      [disabled]="!selectedCustomerID || !isPending"
+    ></dx-button>
+
+    <dx-button
+      id="save-btn"
+      width="150"
+      text="PRINT"
+      [type]="'normal'"
+      (onClick)="onInvoiceprintPopupShow()"
+    ></dx-button>
+  </div>
+
+  <div class="display-inline">
+    <dx-text-area
+      [height]="60"
+      [width]="250"
+      [maxLength]="200"
+      [(value)]="comment"
+      placeholder="Comment..."
+    >
+    </dx-text-area>
+  </div>
+</div>
+
+<div id="parent">
+  <div id="narrow">
+    <div>
+      <dx-accordion
+        [dataSource]="categories"
+        [collapsible]="true"
+        [multiple]="false"
+        width="250"
+        [selectedIndex]="-1"
+      >
+        <div *dxTemplate="let item = data; of: 'RADIOLOGJI'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'RADIOLOGJI')"
+            [dataSource]="operations0"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+        <div *dxTemplate="let item = data; of: 'KONZERVATIVE'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'KONZERVATIVE')"
+            [dataSource]="operations1"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+        <div *dxTemplate="let item = data; of: 'ZBARDHIM'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'ZBARDHIM')"
+            [dataSource]="operations2"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+        <div *dxTemplate="let item = data; of: 'ENDODONTI'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'ENDODONTI')"
+            [dataSource]="operations3"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+        <div *dxTemplate="let item = data; of: 'PERIODONTOLOGJI'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'PERIODONTOLOGJI')"
+            [dataSource]="operations4"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+        <div *dxTemplate="let item = data; of: 'KIRURGJI'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'KIRURGJI')"
+            [dataSource]="operations5"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+        <div *dxTemplate="let item = data; of: 'PROTETIKË'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'PROTETIKË')"
+            [dataSource]="operations6"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+        <div *dxTemplate="let item = data; of: 'ORTODONTI'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'ORTODONTI')"
+            [dataSource]="operations7"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+        <div *dxTemplate="let item = data; of: 'IMPLANT'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'IMPLANT')"
+            [dataSource]="operations8"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
+        <div *dxTemplate="let item = data; of: 'DERMAL DOLGULAR'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'DERMAL DOLGULAR')"
+            [dataSource]="operations9"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+      </dx-accordion>
+    </div>
+  </div>
+
+  <div id="wide">
+    <dx-data-grid
+      id="gridContainer"
+      [dataSource]="appliedOperations"
+      [columns]="['Operation', 'Teeth', 'Doctor', 'Price', 'ColorScale', 'Technician']"
+      (onRowRemoving)="onTreatmentDetailDeleting($event)"
+      [allowColumnResizing]="true"
+      columnResizingMode="nextColumn"
+      [columnAutoWidth]="true"
+    >
+      <dxi-column dataField="Operation"></dxi-column>
+      <dxi-column dataField="Teeth"></dxi-column>
+      <dxi-column dataField="Doctor"></dxi-column>
+      <dxi-column dataField="ColorScale"></dxi-column>
+      <dxi-column dataField="Technician"></dxi-column>
+      <dxi-column dataField="Quantity"></dxi-column>
+      <dxi-column dataField="Price">
+        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+      </dxi-column>
+      <dxi-column dataField="TotalPrice">
+        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+      </dxi-column>
+
+      <dxo-editing mode="row" [allowDeleting]="true"> </dxo-editing>
+    </dx-data-grid>
+  </div>
+</div>
+
+<br />
+<hr class="treatment-hr" />
+
+<div id="parent">
+  <div id="narrow">
+    <!-- Debt/Advance Input Section -->
+    <div class="display-inline-flex">
+      <h4 class="debt-advance-labels">Collected</h4>
+      <dx-number-box
+        [min]="0"
+        [(value)]="collected2"
+        [showSpinButtons]="false"
+        placeholder="0.00"
+        width="90"
+        (valueChangeEvent)="disableSaveBtn()"
+        [disabled]="selectedCreditDebitID === -1"
+      ></dx-number-box>
+    </div>
+
+    <div class="display-inline-flex">
+      <h4 class="debt-advance-labels">
+        {{
+          totalPaymentsResult && totalPaymentsResult > 0
+            ? "Total Advance"
+            : "Total Debt"
+        }}
+      </h4>
+      <dx-number-box
+        [(value)]="totalPaymentsResult"
+        valueChangeEvent="keyup"
+        format="#,##0.00"
+        [showSpinButtons]="false"
+        placeholder="0.00"
+        width="90"
+        [disabled]="!enableEditTotalDebAdvance"
+      >
+      </dx-number-box>
+    </div>
+
+    <div *ngIf="totalPaymentsResult < 0" class="display-inline-flex">
+      <h4 class="debt-advance-labels">Ignore Debt</h4>
+      <dx-check-box [(value)]="ignoreDebt"></dx-check-box>
+    </div>
+
+    <div *ngIf="totalPaymentsResult < 0" class="display-inline-flex">
+      <dx-text-area
+        [height]="60"
+        [width]="250"
+        [maxLength]="200"
+        [(value)]="debtIgnoreNote"
+        placeholder="Note for Debt Ignore..."
+      >
+      </dx-text-area>
+    </div>
+
+    <div class="display-inline-flex">
+      <div class="collector-label">
+        <dx-text-box [value]="collector" [disabled]="true"></dx-text-box>
+      </div>
+
+      <dx-button
+        id="edit-advance-debt-btn"
+        [text]="getEditDebtAdvanceBtnText()"
+        type="default"
+        (onClick)="editDebtAdvance()"
+      >
+      </dx-button>
+    </div>
+    <div class="display-inline-flex">
+      <dx-button
+        id="save-btn"
+        width="150"
+        text="OK"
+        [type]="totalPaymentsResult < 0 ? 'danger' : 'default'"
+        (onClick)="insertCreditDebit()"
+        [disabled]="disableSaveBtn()"
+      ></dx-button>
+    </div>
+    <!-- Debt/Advance Input Section END -->
+  </div>
+
+  <div id="wide">
+    <!-- Debt/Advance Table Section -->
+    <dx-accordion
+      [dataSource]="accordionData"
+      [collapsible]="true"
+      [selectedIndex]="-1"
+      itemTemplate="item"
+    >
+      <div *dxTemplate="let itemData of 'item'">
+        <dx-data-grid
+          id="gridContainer"
+          [dataSource]="customerDebitDataList"
+          [masterDetail]="{ enabled: true, template: 'detail' }"
+          keyExpr="id"
+          [columns]="[
+            'Date',
+            'DebtAmount',
+            'Collector',
+            'PatientName',
+            'Telephone',
+            'Fulfilled'
+          ]"
+          (onRowRemoving)="onDebitDetailDeleting($event)"
+          (onRowClick)="onDebitDetailSelect($event)"
+          (onRowPrepared)="onRowPrepared($event)"
+        >
+          <dxo-selection mode="single"></dxo-selection>
+          <dxi-column dataField="Date"></dxi-column>
+          <dxi-column dataField="Amount">
+            <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+          </dxi-column>
+          
+          <!--<dxi-column dataField="Advance">
+            <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+          </dxi-column>-->
+          <dxi-column dataField="Collector"></dxi-column>
+          <dxi-column dataField="Doctor"></dxi-column>
+          <dxi-column dataType="boolean" caption="Fulfilled" [calculateCellValue]="isFulFilledvalue"></dxi-column>
+          <dxo-editing mode="row" [allowDeleting]="true"> </dxo-editing>
+
+          <div *dxTemplate="let debitDetail of 'detail'">
+            <dx-data-grid
+              [dataSource]="debitDetail.data.childList"
+              [showBorders]="true"
+              [columnAutoWidth]="true"
+              (onRowRemoving)="onDebitDetailDeleting($event)"
+            >
+              <dxo-selection mode="single"></dxo-selection>
+              <dxi-column dataField="Date"></dxi-column>
+              <dxi-column dataField="Amount">
+                <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+              </dxi-column>
+              <dxi-column dataField="Collector"></dxi-column>
+              <dxi-column dataField="Doctor"></dxi-column>
+              <dxi-column dataField="IsIgnored"></dxi-column>
+              <dxi-column dataField="IgnoranceNote"></dxi-column>
+
+              <dxo-editing mode="row" [allowDeleting]="true"> </dxo-editing>
+            </dx-data-grid>
+          </div>
+        </dx-data-grid>
+      </div>
+    </dx-accordion>
+  </div>
+  <!-- Debt/Advance Table Section -->
+</div>
+
+<dx-load-panel [closeOnOutsideClick]="true" [(visible)]="isLoading">
+</dx-load-panel>
+
+<!-- Teeth Number and Quantity Popup -->
+<dx-popup
+#teethPopup
+  class="popup"
+  [width]="400"
+  [height]="550"
+  [showTitle]="true"
+  title="Select Teeth"
+  [dragEnabled]="true"
+  [closeOnOutsideClick]="true"
+  [(visible)]="popupVisible"
+  (onHiding)="onPopupHiding($event)"
+  contentTemplate="popupContent"
+>
+  <div *dxTemplate="let data of 'popupContent'">
+
+    <div *ngIf="selectedOperation.isTeethBased">
+      <p>Type Teeth number followed by ( , )</p>
+      <input type="text" (keyup)="onTeethNumberType($event)" #teethNr />
+      <p>Quantity</p>
+      <dx-number-box [showSpinButtons]="true" [value]="quantity"></dx-number-box>
+    </div>
+
+    <br />
+
+    <div *ngIf="selectedOperation.showColorScale">
+
+      <p>Choose color scale group</p>
+      <dx-radio-group 
+        #colorScaleRadioGroup 
+        [items]="colorScaleGroups" 
+        [value]="selectedColorScaleGroup" 
+        (onValueChanged)="onColorScaleGroupValueChanged($event)" 
+        layout="horizontal">
+      </dx-radio-group>
+      
+      <br/>
+
+      <dx-select-box
+          #colorScaleSelectBox
+          [items]="colorScaleFilteredList"
+          [value]="selectedColorScale?.id"
+          placeholder="Choose Color Scale"
+          valueExpr="id"
+          displayExpr="value"
+          (onValueChanged)="onColorScaleSelect($event)" 
+          [showClearButton]="true"
+      ></dx-select-box>
+    </div>
+
+    <div *ngIf="selectedOperation.showTechnicians">
+      <p>Technicians</p>
+      <dx-select-box
+      #techniciansSelectBox
+      [items]="technicians"
+      [value]="selectedTechnician?.id"
+      placeholder="Choose Technician"
+      valueExpr="id"
+      displayExpr="value"
+      [showClearButton]="true"
+      (onValueChanged)="onTechnicianSelect($event)" 
+        ></dx-select-box>
+    </div>
+    
+    <br />  
+    <dx-button text="OK" type="default" (onClick)="selectTeeth($event)">
+    </dx-button>
+  </div>
+</dx-popup>
+
+<dx-popup
+  class="popup"
+  [width]="300"
+  [height]="250"
+  [dragEnabled]="true"
+  [closeOnOutsideClick]="true"
+  [(visible)]="creditDebitPopupVisible"
+  contentTemplate="creditDebitPopupContent"
+>
+  <div *dxTemplate="let data of 'creditDebitPopupContent'">
+    <p>{{ advaceDebtPopupText }}</p>
+
+    <dx-button
+      text="Yes"
+      type="default"
+      (onClick)="onIncludeDebitOrAdvance(true)"
+    >
+    </dx-button>
+
+    <dx-button
+      text="No"
+      type="normal"
+      (onClick)="onIncludeDebitOrAdvance(false)"
+    >
+    </dx-button>
+  </div>
+</dx-popup>
+
+<!-- Edit Total Debt/Advance Popup -->
+<dx-popup
+  class="popup"
+  [width]="300"
+  [height]="250"
+  [dragEnabled]="true"
+  [closeOnOutsideClick]="true"
+  [(visible)]="editTotalDebtAdvancePopupVisible"
+  contentTemplate="creditDebitPopupContent"
+>
+  <div *dxTemplate="let data of 'creditDebitPopupContent'">
+    <p>
+      Are you sure want to change Total Debt/Advance from:
+      <strong>{{ totalPaymentsResultClone.toFixed(2) }}</strong> to
+      <strong>{{ totalPaymentsResult.toFixed(2) }}</strong>
+    </p>
+
+    <dx-button text="Yes" type="default" (onClick)="onDebtAdvanceUpdate()">
+    </dx-button>
+
+    <dx-button text="No" type="normal" (onClick)="resetDebtAdvanceEdit()">
+    </dx-button>
+  </div>
+</dx-popup>
+
+
+<dx-popup
+  class="popup"
+  title="Invoice Details"
+  [width]="800"
+  [height]="600"
+  [dragEnabled]="true"
+  [closeOnOutsideClick]="true"
+  [(visible)]="showInvoicePrintPopup"
+  contentTemplate="invoicePopupTemplate"
+>
+  <div *dxTemplate="let data of 'invoicePopupTemplate'">
+    <dx-scroll-view width="100%" height="100%">
+      <div id="invoiceDataGrid">
+        <dx-data-grid
+        #invoiceGrid
+        id="invoiceGridContainer"
+        [dataSource]="invoiceData"
+        [columns]="['Operation', 'Quantity', 'Price', 'TotalPrice']"
+        [showBorders]="true"
+        (onSelectionChanged)="onInvoiceDataPrepare($event)"
+        >
+          <dxo-selection
+            mode="multiple"
+            [allowSelectAll]="false"
+          ></dxo-selection>
+        </dx-data-grid>
+      </div>
+        <div id="bottom-wrapper">
+          <div id="sum">
+            <p><strong>Sum: </strong>{{invoiceData.sum}}</p>
+          </div>
+          <div *ngIf="sale > 0" id="sale">
+            <p><strong>Sale: </strong>{{sale}}</p>
+          </div>
+          <div id="print-button">
+            <dx-button text="Print" (onClick)="onInvoicePrint($event)" ></dx-button>
+          </div>
+          <div id="make-a-copy-checkbox">
+            <span>Make a copy of invoice!</span>
+            <dx-check-box [(value)]="makeCopyOfInvoice"></dx-check-box>
+          </div>
+        </div>
+    </dx-scroll-view>
+    
+  </div>
+
+</dx-popup>
+
+

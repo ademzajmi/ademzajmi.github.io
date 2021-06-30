@@ -1,0 +1,76 @@
+
+<div class="wrapper">
+
+
+  <!-- <dx-date-box id="datepicker" [(value)]="date" (onValueChanged)="onDateChange($event)" type="date" displayFormat="dd/MM/yyyy">
+  </dx-date-box> -->
+
+<div class="filters-wrapper">
+  <div class="filters-wrapper-item">
+    <h4 style="margin: 5px;">Start Date</h4>
+    <dx-date-box 
+      [(max)]="endValue"
+      [(value)]="startValue"
+      (onValueChanged)="onDateChange($event, 'startValue')" >
+    </dx-date-box>
+  </div>
+  <div class="filters-wrapper-item">
+    <h4 style="margin: 5px;">End Date</h4>
+    <dx-date-box 
+      [(min)]="startValue"
+      [(value)]="endValue"
+      (onValueChanged)="onDateChange($event, 'endValue')" >
+    </dx-date-box>
+  </div>  
+ 
+  <div id="includeDebt" class="filters-wrapper-item">
+    <h4 style="margin: 5px;">Include Debt</h4>
+    <dx-check-box (onValueChanged)="onCheckboxFilterChange($event, 'includeDebt')" [value]="includeDebt"></dx-check-box>
+  </div>
+
+  <div id="includeDebtPayment" class="filters-wrapper-item">
+    <h4 style="margin: 5px;">Include Debt Payment</h4>
+    <dx-check-box (onValueChanged)="onCheckboxFilterChange($event, 'includeDebtPayment')" [value]="includeDebtPayment"></dx-check-box>
+  </div>
+
+  <div id="includeAdvance" class="filters-wrapper-item">
+    <h4 style="margin: 5px;">Include Advance</h4>
+    <dx-check-box (onValueChanged)="onCheckboxFilterChange($event, 'includeAdvance')" [value]="includeAdvance"></dx-check-box>
+  </div>
+
+  <div id="includeAdvancePayment" class="filters-wrapper-item">
+    <h4 style="margin: 5px;">Include Advance Payment</h4>
+    <dx-check-box (onValueChanged)="onCheckboxFilterChange($event, 'includeAdvancePayment')" [value]="includeAdvancePayment"></dx-check-box>
+  </div>
+
+</div>
+  
+<dx-data-grid id="gridContainer" [showBorders]="true" [dataSource]="dailyReportList"  [columnAutoWidth]="true" (onRowPrepared)="onRowPrepared($event)">
+    <dxo-filter-row 
+    [visible]="true" 
+    [applyFilter]="'auto'"></dxo-filter-row>
+
+    <dxo-paging [pageSize]="20"></dxo-paging>
+    <dxo-sorting mode="none"></dxo-sorting>
+    <dxi-column dataField="Doctor"></dxi-column>
+    <dxi-column dataField="Customer"></dxi-column>
+    <dxi-column dataField="Operation"></dxi-column>
+    <dxi-column dataField="SaleAmount"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+    <dxi-column dataField="CollectedPrice"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+    <dxi-column dataField="AdvanceInfo"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+    <dxi-column dataField="DebtInfo"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+
+    <dxo-summary>
+      <dxi-total-item column="SaleAmount" summaryType="sum"></dxi-total-item>
+      <dxi-total-item column="CollectedPrice" summaryType="sum"></dxi-total-item>
+      <dxi-total-item column="AdvanceInfo" summaryType="sum"></dxi-total-item>
+      <dxi-total-item column="DebtInfo" summaryType="sum"></dxi-total-item>
+    </dxo-summary>
+
+ </dx-data-grid>
+
+    
+  
+  <!-- <dx-button text="Change Payment Date" type="default" (onClick)="popupVisible = !popupVisible" [disabled]="disablePaymentDateBtn()"></dx-button> -->
+  
+</div>

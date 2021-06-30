@@ -1,0 +1,27 @@
+<div class="filters-wrapper">
+  <div class="filters-wrapper-item">
+    <h4 style="margin: 5px;">Start Date</h4>
+    <dx-date-box id="startDatePicker" [(value)]="startDate" (onValueChanged)="onDateChange($event, 'startDate')" type="date"
+      displayFormat="dd/MM/yyyy">
+    </dx-date-box>
+  </div>
+  
+  <div class="filters-wrapper-item">
+    <h4 style="margin: 5px;">End Date</h4>
+    <dx-date-box id="endDatePicker" [(value)]="endDate" (onValueChanged)="onDateChange($event, 'endDate')" type="date"
+      displayFormat="dd/MM/yyyy">
+    </dx-date-box>
+  </div>
+</div>
+
+<div class="grids-wrapper">
+      <dx-data-grid id="gridContainer" [dataSource]="processedTreatmentInvoicesList" [showBorders]="true">
+        <dxo-export [enabled]="true" [fileName]="processedInvoicesFileName"></dxo-export>
+        <dxi-column dataField="operationID"></dxi-column>
+        <dxi-column dataField="operationName"></dxi-column>
+        <dxi-column dataField="operationsCount"></dxi-column>
+      </dx-data-grid>
+
+  <dx-load-panel [closeOnOutsideClick]="true" [(visible)]="isLoading">
+  </dx-load-panel>
+</div>

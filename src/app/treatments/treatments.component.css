@@ -1,0 +1,108 @@
+.gridContainer { padding: 20px; }
+
+.customerSelectBox { padding-top: 20px; padding-left: 10px; }
+
+.display-inline { display:inline-block; }
+
+.display-inline-flex { 
+  display:inline-flex;
+  margin: 10px;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-box-1{
+  flex: 1
+}
+
+.flex-box-2{
+  flex: 2
+}
+
+.flex-box-3{
+  flex: 3
+}
+
+.debt-advance-labels {
+  width: 120px;
+  margin: 5px;
+  color: #848484;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.treatment-hr {
+  border: 2px solid #848484;
+  border-radius: 5px;
+}
+
+.collector-label {
+  margin-right: 5px;
+}
+
+#edit-advance-debt-btn {
+  background: #b4b4b4;
+  border: 1px solid #c8c8c8;
+}
+
+.accordion {
+    margin-top: 20px
+}
+
+#save-btn {
+   margin-bottom: 25px;
+   margin-left: 20px
+}
+
+#sale {
+    color: #333;
+    padding-left: 40px;
+}
+
+#parent {
+  display: flex;
+  padding-top: 30px
+}
+
+#narrow {
+  float: left;
+  width: 250px;
+}
+
+#wide {
+  padding-left: 30px;
+  float: right;
+  width: calc(100% - 250px);
+}
+
+#print-button {
+  float: right;
+  margin-top: 10px;
+}
+
+#make-a-copy-checkbox {
+  float: right;
+  margin-right: 10px;
+  margin-top: 15px;
+}
+
+#bottom-wrapper {
+  margin: 10px;
+}
+
+#sum {
+  float: left;
+}
+
+#sale {
+  float: left;
+  color: brown;
+}
+
+::ng-deep .nineteenthcentury {
+    background: red
+}

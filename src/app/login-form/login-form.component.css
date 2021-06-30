@@ -1,0 +1,12 @@
+::ng-deep .dx-item {
+        align-self: center;
+}
+
+::ng-deep .dx-box-flex {
+        padding-top: 50px;
+}
+
+
+#fileuploader-container {
+        margin: 20px;
+}

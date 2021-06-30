@@ -1,0 +1,23 @@
+#parent {
+  display: flex;
+  padding-top: 30px
+}
+#narrow {
+  float: left;
+  width: 250px;
+}
+#wide {
+  padding-left: 40px;
+  float: right;
+  width: calc(100% - 250px);
+}
+
+.display-inline { display:inline-block; }
+
+#gridContainer {
+  margin-top: 20px;
+}
+
+#chart{
+  margin-top: 20px;
+}

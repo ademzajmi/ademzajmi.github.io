@@ -1,0 +1,25 @@
+<div class="dd-container">
+  <div class="dd-control-container" (click)="toggle()" tabindex="0" #displayLabel>
+    <span class="dd-display-item" role="textbox">{{display || 'Select Patient'}}
+			<div class="pull-right"><i class="fa fa-caret-down"></i></div>
+		</span>
+  </div>
+
+  <div class="dd-list-container" [hidden]="isListHide">
+    <div><input type="text" class="drop-input" placeholder="Search..." [(ngModel)]="searchText" (keypress)="onKeyPress($event)"
+        #filterInput></div>
+    <div class="dd-items-container" *ngIf="items.length > 0 && show; else noResultTmp">
+      <!--<div [attr.data-dd-value]="{id:'', display:'Select'}" class="dd-list-item" (click)="onItemSelect()" (mouseover)="onHover($event)" (mouseout)="onHover($event)">{{placeholder}}</div>-->
+      <div #listItems [ngClass]=" { 'dd-active dd-hightlight-item' :isSelected(item)} " class="dd-list-item " *ngFor="let item of items; let i=index "
+        (click)="onItemSelect(item) " [attr.data-dd-value]="stringify(item)" (mouseover)="onHover($event) " (mouseout)="onHover($event) ">
+        {{item.display}}
+      </div>
+    </div>
+
+    <ng-template #noResultTmp>
+      <div class="dd-no-result">
+        <div class="dd-list-item ">No Result!</div>
+      </div>
+    </ng-template>
+  </div>
+</div>

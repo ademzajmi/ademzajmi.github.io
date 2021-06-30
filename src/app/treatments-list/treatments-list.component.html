@@ -1,0 +1,88 @@
+<div id="customerSelectBox">
+  <!--<dx-select-box
+    [items]="customerList"
+    placeholder="Choose Patient"
+    [showClearButton]="true"
+    [searchEnabled]="true"
+    [value]="selectedCustomerID"
+    displayExpr="firstLastName"
+    valueExpr="id"
+    width="280"
+    (onValueChanged)="selectCustomer($event)">
+  </dx-select-box>-->
+
+  <customer-search (onCustomerSelect)="selectCustomer($event)"></customer-search>
+
+</div>
+
+<dx-data-grid id="treatmentsListGrid" [dataSource]="treatmentsList" [allowColumnResizing]="true"
+  [columnAutoWidth]="true" [wordWrapEnabled]="true" [cellHintEnabled]="true"
+  [columns]="['doctor', 'date', 'totalPrice', 'saleAmount', 'finalPrice', 'note', 'collectedPrice']"
+  (onSelectionChanged)="onTreatmentSelect($event)" (onRowPrepared)="onRowPrepared($event)">
+  <dxi-column dataField="doctor"></dxi-column>
+  <dxi-column dataField="date"></dxi-column>
+  <dxi-column dataField="summary"></dxi-column>
+
+  <dxi-column dataField="totalPrice">
+    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+  </dxi-column>
+  <dxi-column dataField="saleAmount">
+    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+  </dxi-column>
+  <dxi-column dataField="finalPrice">
+    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+  </dxi-column>
+  <dxi-column dataField="collectedPrice">
+    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+  </dxi-column>
+  <dxi-column dataField="debtPayment">
+    <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+  </dxi-column>
+  <dxi-column dataType="boolean" caption="Fulfilled" [calculateCellValue]="isFulFilledvalue"></dxi-column>
+  
+  <dxi-column dataField="note"></dxi-column>
+
+  <dxo-selection mode="single"></dxo-selection>
+</dx-data-grid>
+
+<div id="parent">
+  <div id="narrow">
+    <dx-data-grid id="treatmentDetailsListGrid" [dataSource]="treatmentDetailsList" width="620">
+      <dxi-column dataField="operationName" [width]="300"></dxi-column>
+      <dxi-column dataField="teethNo" [width]="100"></dxi-column>
+      <dxi-column dataField="quantity" [width]="80"></dxi-column>
+      <dxi-column dataField="price" [width]="30">
+        <dxo-format type="fixedPoint" [precision]="2"></dxo-format>
+      </dxi-column>
+    </dx-data-grid>
+  </div>
+
+  <div id="wide">
+    <dx-button id="edit-button" width="150" text="Edit Treatment" type="default" (onClick)="editTreatment()"
+      [disabled]="disableBtn()"></dx-button>
+    <dx-button id="reverese-button" width="150" text="Reverse Payment" type="default" (onClick)="reversePayment()"
+      [disabled]="disableBtn()"></dx-button>
+    <dx-button id="del-treatment-button" width="150" text="Delete Treatment" type="danger" (onClick)="onTreatmentDelete('ShowPopup')"
+      [disabled]="disableBtn()"></dx-button>
+  </div>
+
+  <dx-load-panel [closeOnOutsideClick]="true" [(visible)]="isLoading">
+  </dx-load-panel>
+
+</div>
+
+<dx-popup class="popup" [width]="300" [height]="250" [dragEnabled]="true" [closeOnOutsideClick]="true"
+    [(visible)]="popupVisible" contentTemplate="popupContent" title="Delete Treatment">
+    <div *dxTemplate="let data of 'popupContent'">
+        <p >Are you sure ?</p>
+
+     
+          <dx-button text="Yes" type="default" (onClick)="onTreatmentDelete('Yes')">
+          </dx-button>
+  
+          <dx-button text="No" type="normal" (onClick)="onTreatmentDelete('No')">
+          </dx-button>
+        
+    </div>
+
+</dx-popup>

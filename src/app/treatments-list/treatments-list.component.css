@@ -1,0 +1,24 @@
+#treatmentsListGrid {
+    margin-bottom: 50px; 
+    margin-top: 50px
+}
+
+#customerSelectBox {
+    margin-top: 20px;
+}
+
+#parent {
+  display: flex;
+  padding-top: 30px
+}
+
+#narrow {
+  float: left;
+  width: 500px;
+}
+
+#wide {
+  padding-left: 150px;
+  float: right;
+  width: calc(100% - 500px);
+}

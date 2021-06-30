@@ -1,0 +1,16 @@
+
+.filters-wrapper {
+    width: 100vw;
+    max-width: 100%;
+    overflow: hidden;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-top: 12px;
+}
+  
+.filters-wrapper-item {
+    display: inline-block;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    vertical-align: middle;
+}

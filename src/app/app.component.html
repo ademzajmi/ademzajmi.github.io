@@ -1,0 +1,18 @@
+<div class="topnav">
+        <a class="{{disable ? 'isDisabled' : 'active'}}">MedSoft</a>
+        <a [hidden]="!loggedInDoctor.firstname">Welcome {{loggedInDoctor.firstname + ' ' + loggedInDoctor.lastname}}  </a>
+
+        <a (click)="login(disable)" id="log">{{disable ? 'Login' : 'LogOut'}}</a>
+    </div>
+
+<div class="container">
+    
+    <div class="left-content">
+        <dx-tree-view [dataSource]="menuItems" selectionMode="single" [selectByClick]="true" (onItemSelectionChanged)="selectionChanged($event)"
+            [disabled]='disable'>
+        </dx-tree-view>
+    </div>
+    <div class="right-content">
+        <router-outlet></router-outlet>
+    </div>
+</div>

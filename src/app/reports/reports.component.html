@@ -1,0 +1,100 @@
+<div id="parent">
+  <div id="narrow">
+    <div class="dx-field">
+      <label>Year: </label>
+           <dx-select-box 
+          [dataSource]="years"
+          displayExpr="name" 
+          valueExpr="id" 
+          [value]="years[0].id" 
+          (onValueChanged)="selectYear($event)"
+          width="150"></dx-select-box>
+
+        <label>Month: </label>
+           <dx-select-box 
+          [dataSource]="months"
+          displayExpr="name" 
+          valueExpr="id" 
+          [value]="months[0].id" 
+          (onValueChanged)="selectMonth($event)"
+          width="150"></dx-select-box>
+
+    <dx-radio-group [items]="reportIntervalTypes"
+                [value]="reportIntervalTypes[2]"
+                (onValueChanged)="switchReportIntervalType($event)"
+                layout="vertical">
+                </dx-radio-group>
+  </div>
+  </div>
+  <div id="wide">
+   <dx-tabs
+        #apiTabs
+        [dataSource]="tabs"
+        [selectedIndex]="0"
+        (onItemClick)="selectTab($event)"
+    ></dx-tabs>
+
+    <ng-container *ngIf="tab === 0">
+
+        <dx-data-grid id="gridContainer" [showBorders]="true" [dataSource]="revenueData" (onCellPrepared)="onCellPrepared($event)">
+            <dxo-load-panel [enabled]="true"></dxo-load-panel>
+            <dxo-scrolling mode="virtual"></dxo-scrolling>
+            <dxo-sorting mode="none"></dxo-sorting>
+            <dxi-column dataField="Doctor"></dxi-column>
+                         <dxi-column dataField="Customer"></dxi-column>
+                         <dxi-column dataField="Operation"></dxi-column>
+                         <dxi-column dataField="SaleAmount"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+                         <dxi-column dataField="CollectedPrice"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+                         <dxi-column dataField="AdvanceInfo"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+                         <dxi-column dataField="DebtInfo"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+                         <dxo-summary>
+                         <dxi-total-item column="CollectedPrice" summaryType="sum"> </dxi-total-item></dxo-summary>
+      
+         </dx-data-grid>
+
+        <!-- <dx-data-grid
+          id="gridContainer"
+          [dataSource]="revenueData"
+          [columns]="['Date', 'CollectedPrice', 'TotalPrice', 'FinalPrice', 'SaleAmount']">
+
+          <dxo-summary>
+            <dxi-total-item
+              column="CollectedPrice"
+              summaryType="sum">
+            </dxi-total-item>
+            <dxi-total-item
+              column="TotalPrice"
+              summaryType="sum">
+            </dxi-total-item>
+            <dxi-total-item
+              column="FinalPrice"
+              summaryType="sum">
+            </dxi-total-item>
+            <dxi-total-item
+              column="SaleAmount"
+              summaryType="sum">
+            </dxi-total-item>
+          </dxo-summary>
+          <dxi-column dataField="Date"></dxi-column>
+          <dxi-column dataField="CollectedPrice"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+          <dxi-column dataField="TotalPrice"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+          <dxi-column dataField="FinalPrice"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+          <dxi-column dataField="SaleAmount"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+        </dx-data-grid> -->
+    </ng-container>
+    <ng-container *ngIf="tab === 1">
+      <dx-chart
+          id="chart"
+          [dataSource]="dataSource">
+          <dxi-series
+              argumentField="dayOfMonth"
+              valueField="total"
+              name="{{intervalType + ' Chart'}}"
+              type="bar"
+              color="#ffaa66">
+          </dxi-series>
+      </dx-chart>
+    </ng-container>
+  </div>
+</div>
+

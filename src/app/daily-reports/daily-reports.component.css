@@ -1,0 +1,23 @@
+#gridContainer{
+    margin-top: 40px;
+}
+
+#datepicker{
+    margin-top: 40px;
+}
+
+.bc-red {
+    background: red;
+}
+
+.bc-green {
+    background: green;
+}
+
+.popup-wrapper {
+    margin-bottom: 30px;
+}
+
+.wrapper {
+    height: 100%;
+}

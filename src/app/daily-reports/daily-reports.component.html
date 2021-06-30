@@ -1,0 +1,65 @@
+
+<div class="wrapper">
+
+
+   <dx-date-box id="datepicker" [(value)]="date" (onValueChanged)="onDateChange($event)" type="date" displayFormat="dd/MM/yyyy">
+   </dx-date-box>
+   
+   <ng-container *ngIf="tableVisible">
+      <dx-data-grid id="gridContainer" [showBorders]="true" [dataSource]="dailyReportList"  [columnAutoWidth]="true" (onCellPrepared)="onCellPrepared($event)" (onRowClick)="onRowClick($event)">
+         <dxo-load-panel [enabled]="true"></dxo-load-panel>
+         <dxo-scrolling mode="virtual"></dxo-scrolling>
+         <dxo-sorting mode="none"></dxo-sorting>
+         <dxi-column dataField="Doctor"></dxi-column>
+                      <dxi-column dataField="Customer"></dxi-column>
+                      <dxi-column dataField="Operation"></dxi-column>
+                      <dxi-column dataField="SaleAmount"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+                      <dxi-column dataField="CollectedPrice"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+                      <dxi-column dataField="AdvanceInfo"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+                      <dxi-column dataField="DebtInfo"><dxo-format type="fixedPoint" [precision]="2"></dxo-format></dxi-column>
+                      <dxo-summary>
+                         <dxi-total-item column="SaleAmount" summaryType="sum" displayFormat="Sale Amount Sum: {0}"> </dxi-total-item>
+                         <dxi-total-item column="CollectedPrice" summaryType="sum" displayFormat="Collected Sum: {0}"> </dxi-total-item>
+                         <dxi-total-item column="AdvanceInfo" summaryType="sum" displayFormat="Advance Sum: {0}"> </dxi-total-item>
+                         <dxi-total-item column="DebtInfo" summaryType="sum" displayFormat="Debt Sum: {0}"> </dxi-total-item>
+                     </dxo-summary>
+      </dx-data-grid>
+   </ng-container>
+   
+   <dx-button text="Change Payment Date" type="default" (onClick)="popupVisible = !popupVisible" [disabled]="disablePaymentDateBtn()"></dx-button>
+   
+   <dx-popup
+           class="popup"
+           [width]="300"
+           [height]="250"
+           title="Select Payment Date"
+           [dragEnabled]="true"
+           [closeOnOutsideClick]="true"
+           [(visible)]="popupVisible"
+           contentTemplate="popupContent">
+       <div *dxTemplate="let data of 'popupContent'">
+   
+   <div class="popup-wrapper">
+         <div class="datepicker">
+               <dx-date-box id="datepicker" [(value)]="changedPaymentDate" (onValueChanged)="onPaymentDateChange($event)" type="date" displayFormat="dd/MM/yyyy">
+               </dx-date-box>
+         </div>
+         </div> 
+            <div class="btns">
+               <dx-button
+               text="Save"
+               type="default"
+               (onClick)="changePaymentDate()">
+           </dx-button>
+           <dx-button
+               text="Cancel"
+               type="normal"
+               (onClick)="popupVisible = false">
+            </dx-button>
+         </div>
+       </div>
+       </dx-popup>
+
+       
+
+</div>
