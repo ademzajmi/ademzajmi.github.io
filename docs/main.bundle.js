@@ -2167,6 +2167,7 @@ var AppointmentSchedulerComponent = (function () {
         }
     };
     AppointmentSchedulerComponent.prototype.initilizeAppoitmentForm = function (e, note) {
+        debugger;
         var form = e.form;
         var formOptions = form.option();
         var formItems = form.option("items");
@@ -2274,7 +2275,7 @@ var AppointmentSchedulerComponent = (function () {
                     _this.customers.push(obj);
                 });
                 var customer = customersData.find(function (x) { return x.id == id; });
-                _this.initilizeAppoitmentForm(e, customer.note);
+                _this.initilizeAppoitmentForm(e, customer.noteOfCustomer);
             }
         });
     };
