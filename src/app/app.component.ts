@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-    this.httpSubscription = this.appService.appHealthcheck();
+    // this.httpSubscription = this.appService.appHealthcheck();
 
     this._loginService.disableNavbar.subscribe(data => {
       this.disable = !data.item1;
@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.httpSubscription.unsubscribe();
+    // this.httpSubscription.unsubscribe();
   }
 
   login(type) {

@@ -7,6 +7,7 @@ import { Customer, AppointmentSchedulerService } from '../appointment-scheduler/
 import { CustomerFormService } from "./customer-form.service";
 import { CustomerInsertUpdatePrm } from './customer-form';
 import { Router } from "@angular/router";
+import { element } from 'protractor';
 
 
 @Component({
@@ -40,6 +41,18 @@ export class CustomerFormComponent implements OnInit {
 
   genderItems = ["Male", "Female"];
 
+  customers: any[];
+
+  popupVisible = false;
+  popupText = "";
+  existingFullname = "";
+  existingFirstname = "";
+  existingLastname = "";
+  existingTelNumber = "";
+
+  paramsToSend = null;
+
+  noteOfCustomer = "";
   constructor(private _customerService: CustomerFormService, private router: Router) {
     this.maxDate = new Date(this.maxDate.setFullYear(this.maxDate.getFullYear() - 21));
   }
@@ -48,33 +61,86 @@ export class CustomerFormComponent implements OnInit {
     if (!localStorage['loggedInDrID']) {
       this.router.navigate(['/login']);
     }
+
+    this._customerService.getCustomers().subscribe((data: any[]) => {
+      this.customers = data;
+    })
   }
 
   onFormSubmit = function (e) {
-    let formFieldsArray = e.currentTarget;
+    let elements = e.currentTarget.elements;
      e.preventDefault();
-    let params = {
+
+     this.paramsToSend = {
       Id: 0,
       Act: 'I',
-      CustomerNo: formFieldsArray[0] ? formFieldsArray[0].value : '',
-      Firstname: formFieldsArray[1] ? formFieldsArray[1].value : '',
-      Lastname: formFieldsArray[2] ? formFieldsArray[2].value : '',
-      Tel: formFieldsArray[3] ? formFieldsArray[3].value : '',
-      MobileTel: formFieldsArray[4] ? formFieldsArray[4].value : '',
-      Gender: formFieldsArray[5] ? formFieldsArray[5].value === 'Female': false,
-      DateOfBirth: formFieldsArray[7] ? formFieldsArray[7].value : '',
-      PersonalID: formFieldsArray[9] ? formFieldsArray[9].value : '',
-      MessageLang: formFieldsArray[11] ? formFieldsArray[11].value : '',
-      Adress: formFieldsArray[12] ? formFieldsArray[12].value : '',
-      Email: formFieldsArray[13] ? formFieldsArray[13].value : ''
+      CustomerNo: elements.CustomerNo.value,
+      Firstname: elements.FirstName.value,
+      Lastname: elements.LastName.value,
+      Tel: elements.Tel.value,
+      MobileTel: elements.SecondaryTel.value,
+      Gender: elements.Gender.value ? elements.Gender.value === 'Female': false,
+      DateOfBirth: elements.DateOfBirth.value,
+      PersonalID: elements.PersonalID.value,
+      MessageLang: elements.MessagingLanguage.value,
+      Adress: elements.Address.value,
+      Email: elements.Email.value,
+      Note: elements.NoteOfCustomer.value
     }
-     this._customerService.insertCustomer(params).subscribe((data) => {}, 
-    error => {
-      this.toasterMessage('Server Error', 'error');
-    }, () => {
-      this.toasterMessage('Form submitted succsessfuly', 'success');
-      this.form.instance.resetValues();
-    });
+    const firstname = elements.FirstName.value;
+    const lastname = elements.LastName.value;
+    let fullname = firstname.toLowerCase().trim() + lastname.toLowerCase().trim();
+    const existingFullname = this.customers.find(x => (x.firstname.trim().toLowerCase() + x.lastname.trim().toLowerCase()) == fullname);
+   
+    const tel = elements.Tel.value;
+    const existingTelNumber = this.customers.find(x=>x.tel == tel);
+   
+    if (existingFullname || existingTelNumber){
+
+      if(existingFullname) {
+        this.existingFullname = existingFullname;
+        this.existingFirstname = firstname;
+        this.existingLastname = lastname;
+      }
+
+      if(existingTelNumber){
+        this.existingTelNumber = existingTelNumber;
+      }
+      
+      this.popupVisible = true;
+      return;
+    }
+
+    this.sendRequest();
+
+  }
+
+  sendRequest(){
+      this._customerService.insertCustomer(this.paramsToSend).subscribe((data) => {}, 
+        error => {
+          this.toasterMessage('Server Error', 'error');
+        }, () => {
+          this.toasterMessage('Form submitted succsessfuly', 'success');
+          this.form.instance.resetValues();
+        });
+  }
+
+  proceedAnyway() {
+    this.sendRequest();
+
+    this.existingFullname = "";
+    this.existingFirstname = "";
+    this.existingLastname = "";
+    this.existingTelNumber = "";
+    this.popupVisible = false;
+  }
+
+  dontProceed() {
+    this.existingFullname = "";
+    this.existingFirstname = "";
+    this.existingLastname = "";
+    this.existingTelNumber = "";
+    this.popupVisible = false;
   }
 
   toasterMessage(message: string, type: string) {

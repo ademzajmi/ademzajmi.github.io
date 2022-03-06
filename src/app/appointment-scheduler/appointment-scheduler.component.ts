@@ -337,7 +337,8 @@ export class AppointmentSchedulerComponent implements OnInit {
           cloneCustomer.forEach(item => {
             let obj = {
               text: item.firstname + " " + item.lastname + "  |  " + item.tel,
-              id: item.id
+              id: item.id,
+              note: item.noteOfCustomer
             };
             this.customers.push(obj);
           });
@@ -541,7 +542,20 @@ export class AppointmentSchedulerComponent implements OnInit {
     return -1;
   }
 
-  initilizeAppoitmentForm(e) {
+  onCustomerChanged(e){
+    const customer = this.customers.find(x=>x.id == e.value);
+    if(customer) {
+      const list = document.querySelectorAll('.dx-texteditor-input');
+      let item;
+      Array.from(list).forEach(x=> { 
+        if (x && x['name'] == 'Note') {
+          item = x
+      }});
+      item.value = customer.note;
+    }
+  }
+
+  initilizeAppoitmentForm(e, note) {
     debugger;
     let form = e.form;
     let formOptions = form.option();
@@ -560,30 +574,11 @@ export class AppointmentSchedulerComponent implements OnInit {
       formItems.splice(-1, 2);
     }
 
-    // CheckBox
-
-    // itemType="simple"
-    // dataField="Accepted"
-    // editorType="dxCheckBox"
-    // [editorOptions]="{
-    //     text: 'I agree to the Terms and Conditions',
-    //     value: false
-    // }"
-    if (
-      formItems.filter(item => item.dataField === "Missed Appointment")
-        .length === 0
-    ) {
+    if (!formItems.find(item => item.dataField === "Missed Appointment")) {
       formItems.push({
         dataField: "Missed Appointment",
         editorType: "dxCheckBox",
         editorOptions: {
-          // value: false
-
-          // dataSource: this.doctorColorList,
-          // displayExpr: "text",
-          // valueExpr: "id",
-          // searchEnabled: false,
-          // showClearButton: false,
           value: e.appointmentData.hasOwnProperty("isMissed")
             ? e.appointmentData.isMissed
             : false
@@ -591,59 +586,72 @@ export class AppointmentSchedulerComponent implements OnInit {
       });
     }
 
-    formItems.push({
-      dataField: "Bleaching",
-      editorType: "dxCheckBox",
-      editorOptions: {
-        // value: false
-
-        // dataSource: this.doctorColorList,
-        // displayExpr: "text",
-        // valueExpr: "id",
-        // searchEnabled: false,
-        // showClearButton: false,
-        value: e.appointmentData.hasOwnProperty("isBleaching")
-          ? e.appointmentData.isBleaching
-          : false
-      }
-    });
-
-    formItems.push({
-      dataField: "Doctor List",
-      editorType: "dxSelectBox",
-      editorOptions: {
-        dataSource: this.doctorColorList,
-        displayExpr: "text",
-        valueExpr: "id",
-        searchEnabled: false,
-        showClearButton: false,
-        value: e.appointmentData.hasOwnProperty("doctorId")
-          ? e.appointmentData.doctorId
-          : this.selectedDr.id
-      }
-    });
+    if (!formItems.find(x=>x.dataField == "Bleaching")) {
+      formItems.push({
+        dataField: "Bleaching",
+        editorType: "dxCheckBox",
+        editorOptions: {
+          value: e.appointmentData.hasOwnProperty("isBleaching")
+            ? e.appointmentData.isBleaching
+            : false
+        }
+      });
+    }
+    
+    if (!formItems.find(x=>x.dataField == "Doctor List")) {
+      formItems.push({
+        dataField: "Doctor List",
+        editorType: "dxSelectBox",
+        editorOptions: {
+          dataSource: this.doctorColorList,
+          displayExpr: "text",
+          valueExpr: "id",
+          searchEnabled: false,
+          showClearButton: false,
+          value: e.appointmentData.hasOwnProperty("doctorId")
+            ? e.appointmentData.doctorId
+            : this.selectedDr.id
+        }
+      });
+    }
 
     let scope = this;
 
-    formItems.push({
-      dataField: "Customers",
-      editorType: "dxSelectBox",
-      editorOptions: {
-        dataSource: this.customers,
-        displayExpr: "text",
-        valueExpr: "id",
-        onKeyUp: function(args) {
-          scope.searchCustomerSubject.next(args.event.target.value);
-        },
-        searchEnabled: true,
-        showClearButton: true,
-        value: e.appointmentData.hasOwnProperty("customerId")
-          ? e.appointmentData.customerId
-          : "",
-        deferRendering: false
-      }
-    });
+    if (!formItems.find(x=>x.dataField == "Customers")) {
+      formItems.push({
+        dataField: "Customers",
+        editorType: "dxSelectBox",
+        editorOptions: {
+          dataSource: this.customers,
+          displayExpr: "text",
+          valueExpr: "id",
+          onKeyUp: function(args) {
+            scope.searchCustomerSubject.next(args.event.target.value);
+          },
+          onValueChanged: function(e) {
+            scope.onCustomerChanged(e);
+          },
+          searchEnabled: true,
+          showClearButton: true,
+          value: e.appointmentData.hasOwnProperty("customerId")
+            ? e.appointmentData.customerId
+            : "",
+          deferRendering: false
+        }
+      });
+    }
 
+    if (!formItems.find(x=>x.dataField == "Note")) {
+      formItems.push({
+        dataField: "Note",
+        editorType: "dxTextArea",
+        editorOptions: {
+          readOnly: true,
+          value: note || '',
+        }
+      });
+    }
+  
     form.option({
       items: formItems
     });
@@ -661,11 +669,14 @@ export class AppointmentSchedulerComponent implements OnInit {
           customersData.forEach(item => {
             let obj = {
               text: item.firstname + " " + item.lastname + "  |  " + item.tel,
-              id: item.id
+              id: item.id,
+              note: item.noteOfCustomer
             };
             this.customers.push(obj);
           });
-          this.initilizeAppoitmentForm(e);
+          
+          const customer = customersData.find(x=>x.id == id)
+          this.initilizeAppoitmentForm(e, customer.noteOfCustomer);
         }
       });
   }
@@ -676,14 +687,10 @@ export class AppointmentSchedulerComponent implements OnInit {
       !e.appointmentData.customerId
     ) {
       this.customers = [];
-      this.initilizeAppoitmentForm(e);
+      this.initilizeAppoitmentForm(e, null);
     } else {
       this.getCustomerByID(e, e.appointmentData.customerId);
     }
-  }
-
-  onCustomerKeyup(event) {
-    debugger;
   }
 
   onCalnedarValueChanged(e) {

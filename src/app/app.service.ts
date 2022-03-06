@@ -10,7 +10,7 @@ export class AppService {
 
   apiUrl = 'http://aristoapi.gearhostpreview.com/api/core/';
 
-  pingIntervalMilli = 10000;
+  pingIntervalMilli = 120000;
 
   appHealthcheck() {
     return this.http.get(`${this.apiUrl}health`)

@@ -113,52 +113,69 @@
         width="250"
         [selectedIndex]="-1"
       >
+
+      <div *dxTemplate="let item = data; of: 'KONTROLLA'">
+        <dx-list
+          (onItemClick)="onItemClick($event, 'KONTROLLA')"
+          [dataSource]="operations0"
+          [showSelectionControls]="true"
+        ></dx-list>
+      </div>
+
         <div *dxTemplate="let item = data; of: 'RADIOLOGJI'">
           <dx-list
             (onItemClick)="onItemClick($event, 'RADIOLOGJI')"
-            [dataSource]="operations0"
+            [dataSource]="operations1"
             [showSelectionControls]="true"
           ></dx-list>
         </div>
         <div *dxTemplate="let item = data; of: 'KONZERVATIVE'">
           <dx-list
             (onItemClick)="onItemClick($event, 'KONZERVATIVE')"
-            [dataSource]="operations1"
+            [dataSource]="operations2"
             [showSelectionControls]="true"
           ></dx-list>
         </div>
         <div *dxTemplate="let item = data; of: 'ZBARDHIM'">
           <dx-list
             (onItemClick)="onItemClick($event, 'ZBARDHIM')"
-            [dataSource]="operations2"
+            [dataSource]="operations3"
             [showSelectionControls]="true"
           ></dx-list>
         </div>
         <div *dxTemplate="let item = data; of: 'ENDODONTI'">
           <dx-list
             (onItemClick)="onItemClick($event, 'ENDODONTI')"
-            [dataSource]="operations3"
+            [dataSource]="operations4"
             [showSelectionControls]="true"
           ></dx-list>
         </div>
         <div *dxTemplate="let item = data; of: 'PERIODONTOLOGJI'">
           <dx-list
             (onItemClick)="onItemClick($event, 'PERIODONTOLOGJI')"
-            [dataSource]="operations4"
+            [dataSource]="operations5"
             [showSelectionControls]="true"
           ></dx-list>
         </div>
         <div *dxTemplate="let item = data; of: 'KIRURGJI'">
           <dx-list
             (onItemClick)="onItemClick($event, 'KIRURGJI')"
-            [dataSource]="operations5"
+            [dataSource]="operations6"
             [showSelectionControls]="true"
           ></dx-list>
         </div>
+        <div *dxTemplate="let item = data; of: 'IMPLANT'">
+          <dx-list
+            (onItemClick)="onItemClick($event, 'IMPLANT')"
+            [dataSource]="operations7"
+            [showSelectionControls]="true"
+          ></dx-list>
+        </div>
+
         <div *dxTemplate="let item = data; of: 'PROTETIKË'">
           <dx-list
             (onItemClick)="onItemClick($event, 'PROTETIKË')"
-            [dataSource]="operations6"
+            [dataSource]="operations8"
             [showSelectionControls]="true"
           ></dx-list>
         </div>
@@ -166,15 +183,7 @@
         <div *dxTemplate="let item = data; of: 'ORTODONTI'">
           <dx-list
             (onItemClick)="onItemClick($event, 'ORTODONTI')"
-            [dataSource]="operations7"
-            [showSelectionControls]="true"
-          ></dx-list>
-        </div>
-
-        <div *dxTemplate="let item = data; of: 'IMPLANT'">
-          <dx-list
-            (onItemClick)="onItemClick($event, 'IMPLANT')"
-            [dataSource]="operations8"
+            [dataSource]="operations9"
             [showSelectionControls]="true"
           ></dx-list>
         </div>
@@ -182,10 +191,11 @@
         <div *dxTemplate="let item = data; of: 'DERMAL DOLGULAR'">
           <dx-list
             (onItemClick)="onItemClick($event, 'DERMAL DOLGULAR')"
-            [dataSource]="operations9"
+            [dataSource]="operations10"
             [showSelectionControls]="true"
           ></dx-list>
         </div>
+        
       </dx-accordion>
     </div>
   </div>

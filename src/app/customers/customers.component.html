@@ -3,7 +3,7 @@
     #gridRef
     [hoverStateEnabled]="true"
     [dataSource]="customers"
-    [columns]="['customerNo', 'firstname', 'lastname', 'tel', 'secondary tel', 'gender', 'birthdate', 'adress', 'email']"
+    [columns]="['customerNo', 'firstname', 'lastname', 'tel', 'secondary tel', 'gender', 'birthdate', 'adress', 'email', 'noteOfCustomer']"
     (onRowInserting)="insertPatient($event)"
     (onRowUpdating)="updatePatient($event)"
     (onRowRemoving)="deletePatient($event)"
@@ -56,6 +56,7 @@
         </dxi-column>
         <dxi-column dataField="adress"></dxi-column>
         <dxi-column dataField="email"></dxi-column>
+        <dxi-column dataField="noteOfCustomer"></dxi-column>
 </dx-data-grid>
 <br>
 <br>

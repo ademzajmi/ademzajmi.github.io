@@ -55,7 +55,6 @@ export class CustomersComponent implements OnInit {
   }
 
   ngOnInit() {
-
     if (!localStorage['loggedInDrID']) {
       this.router.navigate(['/login']);
     }
@@ -69,11 +68,9 @@ export class CustomersComponent implements OnInit {
   selectRow(e) {
     this.selectedCustomerID = e.key.id;
     this.disableAnamnezBtn = false;
-    debugger;
   }
 
   navigateToAnamnez(){
-    debugger;
     this.router.navigate(['/anamneza'], { queryParams: { CustomerID: this.selectedCustomerID } });
   }
 
@@ -162,7 +159,8 @@ export class CustomersComponent implements OnInit {
       PersonalID: '',
       MessageLang: param.messL || '',
       Adress: param.adress || '',
-      Email: param.email || ''
+      Email: param.email || '',
+      Note: param.noteOfCustomer || ''
     }
     this._customerFormService.insertCustomer(params).subscribe((data) => {
     }, error => {
