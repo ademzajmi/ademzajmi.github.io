@@ -61,7 +61,7 @@ export class AppointmentSchedulerComponent implements OnInit {
 
   appointmentViewTypes = ["All", "Me"];
 
-  rooms = ["1", "2", "3"];
+  rooms = ["1", "2", "3", "4", "5"];
 
   selectedRoom = "1";
 
