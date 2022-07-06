@@ -309,8 +309,16 @@ export class AppointmentSchedulerComponent implements OnInit {
   }
 
   selectChair(event) {
+    debugger;
+    let chairId = event.value; 
+    if(chairId == '5')
+      chairId = '6';
+
+    if(chairId == '4')
+      chairId = '5';
+
     this.selectedChair = this.chairListData.filter(
-      x => x.chairId === event.value
+      x => x.chairId === chairId
     )[0];
     // this.selectedChair.chairId = this.selectedChair.chairId.toString();
     this.getAppointmentsByDateRange(
