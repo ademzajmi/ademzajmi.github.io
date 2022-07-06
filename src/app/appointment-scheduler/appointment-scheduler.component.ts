@@ -32,6 +32,7 @@ class ChairListData {
   chairId: number | string;
   doctorId: number;
   number: number;
+  numberStr: string;
   isPrimaryChair: boolean;
 }
 
@@ -238,9 +239,11 @@ export class AppointmentSchedulerComponent implements OnInit {
           return obj;
         });
         this.chairListData = data.chairListData;
-
         this.chairListData.forEach(
-          item => (item.chairId = item.chairId.toString())
+          item => {
+            item.chairId = item.chairId.toString();
+            item.numberStr = item.number.toString();
+          }
         );
 
         // if(localStorage['loggedInDrID'] == '-1'){
@@ -309,23 +312,23 @@ export class AppointmentSchedulerComponent implements OnInit {
   }
 
   selectChair(event) {
-    debugger;
-    let chairId = event.value; 
+    let chairId = event.value.toString(); 
     if(chairId == '5')
-      chairId = '6';
-
+    chairId = '6';
+    
     if(chairId == '4')
-      chairId = '5';
-
+    chairId = '5';
+    
     this.selectedChair = this.chairListData.filter(
       x => x.chairId === chairId
-    )[0];
-    // this.selectedChair.chairId = this.selectedChair.chairId.toString();
-    this.getAppointmentsByDateRange(
-      this.selectedDr.id,
-      this.selectedChair.chairId,
-      this.getDateRange(this.currentView)
-    );
+      )[0];
+      // this.selectedChair.chairId = this.selectedChair.chairId.toString();
+      this.getAppointmentsByDateRange(
+        this.selectedDr.id,
+        this.selectedChair.chairId,
+        this.getDateRange(this.currentView)
+        );
+        event.preventDefault();
     // this.getAppointment(this.selectedDr.id, this.selectedChair.chairId);
   }
 
