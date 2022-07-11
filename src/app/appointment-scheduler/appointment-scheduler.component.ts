@@ -62,7 +62,7 @@ export class AppointmentSchedulerComponent implements OnInit {
 
   appointmentViewTypes = ["All", "Me"];
 
-  rooms = ["1", "2", "3", "4", "5"];
+  rooms = ["1", "2", "3", "4", "5", "Rentgen"];
 
   selectedRoom = "1";
 
@@ -150,11 +150,11 @@ export class AppointmentSchedulerComponent implements OnInit {
       this.bleachingAppointments.length
     ) {
       const hasBleaching = this.bleachingAppointments.some(
-          item =>
-            moment(cellData.startDate).unix() >=
-              moment(item.startDate).unix() &&
-            moment(cellData.endDate).unix() <= moment(item.endDate).unix()
-        ),
+        item =>
+          moment(cellData.startDate).unix() >=
+          moment(item.startDate).unix() &&
+          moment(cellData.endDate).unix() <= moment(item.endDate).unix()
+      ),
         className = hasBleaching ? "bleaching" : "";
       return className;
     } else {
@@ -187,18 +187,18 @@ export class AppointmentSchedulerComponent implements OnInit {
     new Date().getMonth() == 11
       ? (this.secondMonth = new Date(new Date().getFullYear() + 1, 0, 1))
       : (this.secondMonth = new Date(
-          new Date().getFullYear(),
-          new Date().getMonth() + 1,
-          1
-        ));
+        new Date().getFullYear(),
+        new Date().getMonth() + 1,
+        1
+      ));
 
     new Date().getMonth() == 11
       ? (this.thirdMonth = new Date(new Date().getFullYear() + 1, 1, 1))
       : (this.thirdMonth = new Date(
-          new Date().getFullYear(),
-          new Date().getMonth() + 2,
-          1
-        ));
+        new Date().getFullYear(),
+        new Date().getMonth() + 2,
+        1
+      ));
   }
 
   getAppointment(doctorId, chairId) {
@@ -242,7 +242,11 @@ export class AppointmentSchedulerComponent implements OnInit {
         this.chairListData.forEach(
           item => {
             item.chairId = item.chairId.toString();
-            item.numberStr = item.number.toString();
+            if (item.chairId == '4') {
+              item.numberStr = "Rentgen";
+            } else {
+              item.numberStr = item.number.toString();
+            }
           }
         );
 
@@ -312,23 +316,28 @@ export class AppointmentSchedulerComponent implements OnInit {
   }
 
   selectChair(event) {
-    let chairId = event.value.toString(); 
-    if(chairId == '5')
-    chairId = '6';
-    
-    if(chairId == '4')
-    chairId = '5';
-    
+    debugger;
+    let chairId = event.value.toString();
+
+    if (chairId == '5')
+      chairId = '6';
+
+    if (chairId == '4')
+      chairId = '5';
+
+    if (chairId == 'Rentgen')
+      chairId = '4';
+
     this.selectedChair = this.chairListData.filter(
       x => x.chairId === chairId
-      )[0];
-      // this.selectedChair.chairId = this.selectedChair.chairId.toString();
-      this.getAppointmentsByDateRange(
-        this.selectedDr.id,
-        this.selectedChair.chairId,
-        this.getDateRange(this.currentView)
-        );
-        event.preventDefault();
+    )[0];
+    // this.selectedChair.chairId = this.selectedChair.chairId.toString();
+    this.getAppointmentsByDateRange(
+      this.selectedDr.id,
+      this.selectedChair.chairId,
+      this.getDateRange(this.currentView)
+    );
+    event.preventDefault();
     // this.getAppointment(this.selectedDr.id, this.selectedChair.chairId);
   }
 
@@ -526,6 +535,7 @@ export class AppointmentSchedulerComponent implements OnInit {
   }
 
   selectDr(e) {
+    debugger;
     this.selectedDr = this.doctorListData.filter(x => x.id == e.value)[0];
     this.selectedChair = this.chairListData.filter(
       x => x.doctorId === this.selectedDr.id && x.isPrimaryChair
@@ -553,18 +563,20 @@ export class AppointmentSchedulerComponent implements OnInit {
     return -1;
   }
 
-  onCustomerChanged(e){
-    const customer = this.customers.find(x=>x.id == e.value);
-    if(customer) {
+  onCustomerChanged(e) {
+    const customer = this.customers.find(x => x.id == e.value);
+    if (customer) {
       const list = document.querySelectorAll('.dx-texteditor-input');
       let item;
-      Array.from(list).forEach(x=> { 
+      Array.from(list).forEach(x => {
         if (x && x['name'] == 'Note') {
           item = x
-      }});
+        }
+      });
       item.value = customer.note;
     }
   }
+
 
   initilizeAppoitmentForm(e, note) {
     debugger;
@@ -597,7 +609,7 @@ export class AppointmentSchedulerComponent implements OnInit {
       });
     }
 
-    if (!formItems.find(x=>x.dataField == "Bleaching")) {
+    if (!formItems.find(x => x.dataField == "Bleaching")) {
       formItems.push({
         dataField: "Bleaching",
         editorType: "dxCheckBox",
@@ -608,27 +620,32 @@ export class AppointmentSchedulerComponent implements OnInit {
         }
       });
     }
-    
-    if (!formItems.find(x=>x.dataField == "Doctor List")) {
-      formItems.push({
-        dataField: "Doctor List",
-        editorType: "dxSelectBox",
-        editorOptions: {
-          dataSource: this.doctorColorList,
-          displayExpr: "text",
-          valueExpr: "id",
-          searchEnabled: false,
-          showClearButton: false,
-          value: e.appointmentData.hasOwnProperty("doctorId")
-            ? e.appointmentData.doctorId
-            : this.selectedDr.id
-        }
-      });
-    }
+
+      // Removed since we are selecting from main view
+    // if (!formItems.find(x=>x.dataField == "Doctor List")) {
+    //   debugger;
+    //   formItems.push({
+    //     dataField: "Doctor List",
+    //     editorType: "dxSelectBox",
+    //     editorOptions: {
+    //       dataSource: this.doctorColorList,
+    //       displayExpr: "text",
+    //       valueExpr: "id",
+    //       searchEnabled: false,
+    //       showClearButton: false,
+    //       onValueChanged: function(e) {
+    //         scope.selectDr(e);
+    //       },
+    //       value: e.appointmentData.hasOwnProperty("doctorId")
+    //         ? e.appointmentData.doctorId
+    //         : this.selectedDr.id
+    //     }
+    //   });
+    // }
 
     let scope = this;
 
-    if (!formItems.find(x=>x.dataField == "Customers")) {
+    if (!formItems.find(x => x.dataField == "Customers")) {
       formItems.push({
         dataField: "Customers",
         editorType: "dxSelectBox",
@@ -636,10 +653,10 @@ export class AppointmentSchedulerComponent implements OnInit {
           dataSource: this.customers,
           displayExpr: "text",
           valueExpr: "id",
-          onKeyUp: function(args) {
+          onKeyUp: function (args) {
             scope.searchCustomerSubject.next(args.event.target.value);
           },
-          onValueChanged: function(e) {
+          onValueChanged: function (e) {
             scope.onCustomerChanged(e);
           },
           searchEnabled: true,
@@ -652,7 +669,7 @@ export class AppointmentSchedulerComponent implements OnInit {
       });
     }
 
-    if (!formItems.find(x=>x.dataField == "Note")) {
+    if (!formItems.find(x => x.dataField == "Note")) {
       formItems.push({
         dataField: "Note",
         editorType: "dxTextArea",
@@ -662,7 +679,7 @@ export class AppointmentSchedulerComponent implements OnInit {
         }
       });
     }
-  
+
     form.option({
       items: formItems
     });
@@ -685,8 +702,8 @@ export class AppointmentSchedulerComponent implements OnInit {
             };
             this.customers.push(obj);
           });
-          
-          const customer = customersData.find(x=>x.id == id)
+
+          const customer = customersData.find(x => x.id == id)
           this.initilizeAppoitmentForm(e, customer.noteOfCustomer);
         }
       });
