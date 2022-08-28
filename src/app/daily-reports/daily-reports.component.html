@@ -6,7 +6,14 @@
    </dx-date-box>
    
    <ng-container *ngIf="tableVisible">
-      <dx-data-grid id="gridContainer" [showBorders]="true" [dataSource]="dailyReportList"  [columnAutoWidth]="true" (onCellPrepared)="onCellPrepared($event)" (onRowClick)="onRowClick($event)">
+      <dx-data-grid id="gridContainer" 
+         [showBorders]="true" 
+         [dataSource]="dailyReportList"  
+         [columnAutoWidth]="true"
+         [columnHidingEnabled]="true"
+         (onCellPrepared)="onCellPrepared($event)" 
+         (onRowClick)="onRowClick($event)">
+         <dxo-export [enabled]="true" fileName="{{'Daily_Report_' + date}}"></dxo-export>
          <dxo-load-panel [enabled]="true"></dxo-load-panel>
          <dxo-scrolling mode="virtual"></dxo-scrolling>
          <dxo-sorting mode="none"></dxo-sorting>
