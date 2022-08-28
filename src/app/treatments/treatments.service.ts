@@ -94,6 +94,10 @@ export class TreatmentsService {
     return this.http.post(this.apiUrl + "DebtUpdate?" + queryParams, data, { headers: this.getAuthorizationHeader() });
   }
 
+  addDailyOperationReport(data){
+    return this.http.post(this.apiUrl + "DailyOperationsReportInsert", data, { headers: this.getAuthorizationHeader() });
+  }
+
   postProcessedTreatmentsInovice(data){
     let queryParams = this.serializeObject(data);
     return this.http.post(this.apiUrl + "TreatmentDetailProcess", data, { headers: this.getAuthorizationHeader() });

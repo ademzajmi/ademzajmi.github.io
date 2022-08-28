@@ -176,6 +176,8 @@ export class TreatmentsComponent implements OnInit, OnDestroy {
   showInvoicePrintPopup = false;
 
   invoiceData: any;
+  selectedInvoiceData: any;
+  invoiceSumTxt = '0';
   invoiceDataToPrint: any;
   makeCopyOfInvoice = false;
 
@@ -212,25 +214,36 @@ export class TreatmentsComponent implements OnInit, OnDestroy {
 
   onInvoiceprintPopupShow() {
     this.showInvoicePrintPopup = !this.showInvoicePrintPopup;
+    if (this.showInvoicePrintPopup) {
+      this.invoiceData = this.appliedOperations.filter(x => x.TotalPrice > 0);
+    }
     setTimeout(() => {
       this.invoiceGrid.instance.selectAll();
     }, 100);
   }
 
-  onInvoiceDataPrepare(e){
-    console.log('e.selectedRowsData', e.selectedRowsData);
-    let invoiceData = [...e.selectedRowsData];
-    this.invoiceData = invoiceData.filter(x=> x.TotalPrice > 0);
+  onInvoiceDataPrepare(e) {
+    // console.log('e.selectedRowsData', e);
+    // e.selectedRowsData.forEach(x => x.isSelected = true);
+    // e.currentDeselectedRowKeys.forEach(x => x.isSelected = false);
+    // let invoiceData = [...e.selectedRowsData];
+    // if ([...e.currentDeselectedRowKeys].length > 0) {
+    //   invoiceData.push(...e.currentDeselectedRowKeys);
+    // }
+    // // let invoiceData = [...e.selectedRowsData];
+    // this.invoiceData = invoiceData.filter(x => x.TotalPrice > 0);
+
+    this.selectedInvoiceData = [...e.selectedRowsData];
 
     let sum = !!this.sale ? 0 - this.sale : 0;
-    invoiceData.forEach(x=> sum += x.TotalPrice);
+    this.selectedInvoiceData.forEach(x => sum += x.TotalPrice);
 
     let order = 0;
     let dateTime = moment().format("YYYYMMDDHHmmss").toString();
-    
-    let mappedInvoiceData = invoiceData.map(x => {
+
+    let mappedInvoiceData = this.selectedInvoiceData.map(x => {
       order++;
-      return { 
+      return {
         StartString: "S,1,______,_,__",
         Opration: x.Operation,
         Price: x.Price,
@@ -248,32 +261,38 @@ export class TreatmentsComponent implements OnInit, OnDestroy {
     this.invoiceDataToPrint = [...mappedInvoiceData];
 
     const sumTxt = parseFloat(sum.toString()).toFixed(2).toString();
-    this.invoiceData.sum = sumTxt;
+    this.invoiceSumTxt = sumTxt;
 
-    if(this.sale)
-      this.invoiceDataToPrint.push({ C: `C,1,______,_,__;0;0;${-this.sale};`});
+    if (this.sale)
+      this.invoiceDataToPrint.push({ C: `C,1,______,_,__;0;0;${-this.sale};` });
 
-    this.invoiceDataToPrint.push({ Q: "Q,1,______,_,__;1;Ju Faleminderit!"});
-    this.invoiceDataToPrint.push({ Q: "Q,1,______,_,__;2;Tesekkur Ederiz!"});
-    
-    if(this.sale) {
-      this.invoiceDataToPrint.push({ Q: `T,1,______,_,__;`});
+    this.invoiceDataToPrint.push({ Q: "Q,1,______,_,__;1;Ju Faleminderit!" });
+    this.invoiceDataToPrint.push({ Q: "Q,1,______,_,__;2;Tesekkur Ederiz!" });
+
+    if (this.sale) {
+      this.invoiceDataToPrint.push({ Q: `T,1,______,_,__;` });
     } else {
-      this.invoiceDataToPrint.push({ Q: `T,1,______,_,__;0;${sumTxt}`});
+      this.invoiceDataToPrint.push({ Q: `T,1,______,_,__;0;${sumTxt}` });
     }
   }
 
   onInvoicePrint(e) {
 
-    const treatmentsDetails = { treatmentsDetails: this.invoiceData.map(x=>x.Id) };
-    this._treatmentsService.postProcessedTreatmentsInovice(treatmentsDetails).subscribe();
+    // const treatmentsDetails = { treatmentsDetails: this.invoiceData.map(x => x.Id) };
+    // this._treatmentsService.postProcessedTreatmentsInovice(treatmentsDetails).subscribe();
+    const operationQuantities = this.selectedInvoiceData.map(x => { return { operationId: x.OperationID, quantity: x.Quantity } });
+    const dailyOperations = {
+      reportDate: new Date(),
+      operationQuantities
+    };
+    this._treatmentsService.addDailyOperationReport(dailyOperations).subscribe();
 
     let time = moment(new Date()).format("HHmmss").toString();
     new InvoiceGenerator(this.invoiceDataToPrint, `invoice-${time}`, { fieldSeparator: ';' });
 
     if (this.makeCopyOfInvoice)
-      new InvoiceGenerator([{Copy: "V,1,______,_,__;m1"}], `invoicecopy-${time}`, { fieldSeparator: ';' });
-      
+      new InvoiceGenerator([{ Copy: "V,1,______,_,__;m1" }], `invoicecopy-${time}`, { fieldSeparator: ';' });
+
     this.showInvoicePrintPopup = false;
     e.event.stopPropagation();
   }

@@ -67,9 +67,15 @@ export class ReportsService {
     return this.http.get(this.apiUrl + 'GetDoctorData?Action=GETDOCTORS', { headers: this.getAuthorizationHeader() });
   }
 
+  //Depricated
   getProcessedTreatmentInvoices(data){
     let queryParams = this.serializeObject(data);
     return this.http.get(this.apiUrl + 'GetProcessedTreatmentsByDate?' + queryParams, { headers: this.getAuthorizationHeader() });
+  }
+
+  getDailyOperationsReportByDateInterval(data){
+    let queryParams = this.serializeObject(data);
+    return this.http.get(this.apiUrl + 'GetDailyOperationsReportByDateInterval?' + queryParams, { headers: this.getAuthorizationHeader() });
   }
 
   getAuthorizationHeader() {

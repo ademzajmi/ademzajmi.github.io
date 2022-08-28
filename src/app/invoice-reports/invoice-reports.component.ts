@@ -34,7 +34,8 @@ export class InvoiceReportsComponent implements OnInit {
       dateFrom: this.startDate,
       dateTo: this.endDate
     }
-    this._reportsService.getProcessedTreatmentInvoices(data).subscribe(data=>{
+    this._reportsService.getDailyOperationsReportByDateInterval(data).subscribe(data=>{
+      debugger;
       this.isLoading = false;
       this.processedTreatmentInvoicesList = data as any;
     });
