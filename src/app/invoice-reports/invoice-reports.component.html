@@ -19,7 +19,8 @@
         <dxo-export [enabled]="true" [fileName]="processedInvoicesFileName"></dxo-export>
         <dxi-column dataField="operationID"></dxi-column>
         <dxi-column dataField="operationName"></dxi-column>
-        <dxi-column dataField="operationsCount"></dxi-column>
+        <dxi-column dataField="quantity"></dxi-column>
+        <dxi-column dataField="reportDate"></dxi-column>
       </dx-data-grid>
 
   <dx-load-panel [closeOnOutsideClick]="true" [(visible)]="isLoading">
