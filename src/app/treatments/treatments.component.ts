@@ -216,6 +216,7 @@ export class TreatmentsComponent implements OnInit, OnDestroy {
     this.showInvoicePrintPopup = !this.showInvoicePrintPopup;
     if (this.showInvoicePrintPopup) {
       this.invoiceData = this.appliedOperations.filter(x => x.TotalPrice > 0);
+      this.invoiceData.forEach((item, index) => item.id = index + 1);
     }
     setTimeout(() => {
       this.invoiceGrid.instance.selectAll();
